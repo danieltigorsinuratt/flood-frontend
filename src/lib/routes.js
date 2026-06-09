@@ -63,7 +63,9 @@ export function requiresAuth(pathname) {
   return (
     pathname.startsWith('/dashboard') ||
     pathname.startsWith('/monitoring') ||
-    pathname.startsWith('/profile')
+    pathname.startsWith('/profile') ||
+    pathname.startsWith('/verify-email') ||
+    pathname.startsWith('/confirm-password')
   );
 }
 

@@ -41,7 +41,7 @@ export function IotApiHostProvider({ children }) {
     setBaseUrl('');
   }, []);
 
-  const ingestUrl = baseUrl ? `${baseUrl}/api/sensor-data` : '/api/sensor-data';
+  const ingestUrl = baseUrl ? `${baseUrl}/api/ingest` : '/api/ingest';
 
   return (
     <IotApiHostContext.Provider value={{ baseUrl, ingestUrl, saveIotApiBase, clearBaseUrl }}>

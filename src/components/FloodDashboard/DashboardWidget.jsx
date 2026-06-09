@@ -2,7 +2,7 @@ import MiniWaterChart from '@/components/FloodDashboard/MiniWaterChart';
 import RelayManualSlider from '@/components/FloodDashboard/RelayManualSlider';
 import { TH_NORMAL_MAX_CM, TH_SIAGA_MAX_CM } from '@/lib/dashboardWidgetDefaults';
 import { formatDateTimeWib } from '@/lib/wibTime';
-import axios from 'axios';
+import axios from '@/lib/axios';
 import { useMemo, useState } from 'react';
 
 function avgWater(latestData) {

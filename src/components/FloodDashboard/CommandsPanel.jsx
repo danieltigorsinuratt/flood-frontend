@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '@/lib/axios';
 import { useMemo, useState } from 'react';
 
 import { formatDateTimeWib } from '@/lib/wibTime';
