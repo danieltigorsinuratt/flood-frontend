@@ -1,5 +1,6 @@
 'use client';
 
+import axios from '@/lib/axios';
 import ApplicationLogo from '@/components/ApplicationLogo';
 import Dropdown from '@/components/Dropdown';
 import { useAuth } from '@/contexts/AuthContext';
@@ -118,14 +119,8 @@ export default function AuthenticatedLayout({
             const tidHost = window.setTimeout(() => ctlHost.abort(), 6000);
             let hostOk = false;
             try {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/water-levels`, {
-                    method: 'GET',
-                    signal: ctlHost.signal,
-                    credentials: 'omit',
-                    mode: 'cors',
-                    cache: 'no-store',
-                });
-                hostOk = res.ok;
+               await axios.get('/api/water-levels', { signal: ctlHost.signal });
+            hostOk = true;
             } catch {
                 hostOk = false;
             } finally {
@@ -134,19 +129,8 @@ export default function AuthenticatedLayout({
 
             let live = false;
             try {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${route('dashboard.iot-connectivity')}`, {
-                    method: 'GET',
-                    credentials: 'same-origin',
-                    headers: {
-                        Accept: 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest',
-                    },
-                    cache: 'no-store',
-                });
-                if (res.ok) {
-                    const body = await res.json();
-                    live = Boolean(body?.live);
-                }
+                const { data } = await axios.get(route('dashboard.iot-connectivity'));
+                live = Boolean(data?.live);
             } catch {
                 live = false;
             }
@@ -177,25 +161,12 @@ export default function AuthenticatedLayout({
 
         const loadFromFirmware = async () => {
             try {
-                const res = await fetch(route('dashboard.firmware-api-host'), {
-                    method: 'GET',
-                    credentials: 'same-origin',
-                    headers: {
-                        Accept: 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest',
-                    },
-                    cache: 'no-store',
-                });
-                if (cancelled) {
-                    return;
-                }
-                if (res.ok) {
-                    const data = await res.json();
-                    if (data?.origin) {
-                        setApiDraft(data.origin);
-                        return;
-                    }
-                }
+                const { data } = await axios.get(route('dashboard.firmware-api-host'));
+                if (cancelled) return;
+                if (data?.origin) {
+              setApiDraft(data.origin);
+              return;
+            }
             } catch {
                 /* abaikan */
             }
@@ -708,26 +679,12 @@ export default function AuthenticatedLayout({
                                     let value = apiDraft.trim();
                                     if (!value) {
                                         try {
-                                            const res = await fetch(
-                                                route('dashboard.firmware-api-host'),
-                                                {
-                                                    method: 'GET',
-                                                    credentials: 'same-origin',
-                                                    headers: {
-                                                        Accept: 'application/json',
-                                                        'X-Requested-With': 'XMLHttpRequest',
-                                                    },
-                                                    cache: 'no-store',
-                                                },
-                                            );
-                                            if (res.ok) {
-                                                const data = await res.json();
-                                                if (data?.origin) {
-                                                    value = data.origin;
-                                                    setApiDraft(data.origin);
-                                                }
-                                            }
-                                        } catch {
+                                            const { data } = await axios.get(route('dashboard.firmware-api-host'));
+                                            if (data?.origin) {
+                                                value = data.origin;
+                                                setApiDraft(data.origin);
+                                             }
+                                            } catch {
                                             /* abaikan */
                                         }
                                     }
