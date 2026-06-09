@@ -20,17 +20,25 @@ export function AuthProvider({ children }) {
   const [flash, setFlash] = useState({});
 
   const refresh = useCallback(async () => {
-    try {
-      const { data } = await axios.get('/api/user');
-      setUser(data.user ?? data);
-      setIsAdmin(Boolean(data.is_admin ?? data.isAdmin));
-    } catch {
-      setUser(null);
-      setIsAdmin(false);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+  if (!token) {
+    setUser(null);
+    setIsAdmin(false);
+    setLoading(false);
+    return;
+  }
+  try {
+    const { data } = await axios.get('/api/user');
+    setUser(data.user ?? data);
+    setIsAdmin(Boolean(data.is_admin ?? data.isAdmin));
+  } catch {
+    setUser(null);
+    setIsAdmin(false);
+    localStorage.removeItem('auth_token');
+  } finally {
+    setLoading(false);
+  }
+}, []);
 
   useEffect(() => {
     refresh();
