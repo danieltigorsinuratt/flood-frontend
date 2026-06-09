@@ -6,22 +6,21 @@
 const ROUTES = {
   // Dashboard
   'dashboard': '/dashboard',
-  'dashboard.dataset': '/dashboard/dataset',
+  'dashboard.dataset': '/api/dashboard/dataset',
   'dashboard.riwayat': '/dashboard/riwayat',
   'dashboard.download': '/dashboard/download',
-  'dashboard.download.excel': '/dashboard/download/excel',
+  'dashboard.download.excel': '/api/dashboard/download/excel',
   'dashboard.kalender': '/dashboard/kalender',
-  'dashboard.kalender.data': '/dashboard/kalender/data',
-  'dashboard.iot-connectivity': '/dashboard/iot-connectivity',
-  'dashboard.firmware-api-host': '/dashboard/firmware-api-host',
-  'dashboard.commands.send': '/dashboard/commands/send',
-  'dashboard.user-layout.show': '/dashboard/user-layout',
-  'dashboard.user-layout.store': '/dashboard/user-layout',
-  'dashboard.user-layout.destroy': '/dashboard/user-layout',
-  'dashboard.riwayat.clear-data': '/dashboard/riwayat/clear-data',
-
+  'dashboard.kalender.data': '/api/dashboard/kalender/data',
+  'dashboard.iot-connectivity': '/api/dashboard/iot-connectivity',
+  'dashboard.firmware-api-host': '/api/dashboard/firmware-api-host',
+  'dashboard.commands.send': '/api/dashboard/commands/send',
+  'dashboard.user-layout.show': '/api/dashboard/user-layout',
+  'dashboard.user-layout.store': '/api/dashboard/user-layout',
+  'dashboard.user-layout.destroy': '/api/dashboard/user-layout',
+  'dashboard.riwayat.clear-data': '/api/dashboard/riwayat/clear-data',
   // Landing
-  'landing.chart-data': '/landing/chart-data',
+  'landing.chart-data': '/api/landing/chart-data',
 
   // Monitoring (admin) — halaman
   'monitoring.devices.index': '/monitoring/devices',
