@@ -134,7 +134,7 @@ export default function AuthenticatedLayout({
 
             let live = false;
             try {
-                const res = await fetch(route('dashboard.iot-connectivity'), {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${route('dashboard.iot-connectivity')}`, {
                     method: 'GET',
                     credentials: 'same-origin',
                     headers: {
