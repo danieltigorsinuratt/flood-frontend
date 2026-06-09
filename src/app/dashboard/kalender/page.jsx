@@ -1,4 +1,4 @@
-import KalenderPage from '@/pages/Kalender';
+import KalenderPage from '@/views/Kalender';
 
 export const metadata = {
   title: 'Kalender',

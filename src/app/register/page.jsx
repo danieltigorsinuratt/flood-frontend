@@ -1,4 +1,4 @@
-import RegisterPage from '@/pages/Auth/Register';
+import RegisterPage from '@/views/Auth/Register';
 
 export const metadata = {
   title: 'Daftar Akun',

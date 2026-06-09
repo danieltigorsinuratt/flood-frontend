@@ -1,4 +1,4 @@
-import SensorDataPage from '@/pages/Monitoring/SensorData/Index';
+import SensorDataPage from '@/views/Monitoring/SensorData/Index';
 
 export const metadata = {
   title: 'Data Sensor',

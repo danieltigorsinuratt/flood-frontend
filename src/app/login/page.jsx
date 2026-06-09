@@ -1,4 +1,4 @@
-import LoginPage from '@/pages/Auth/Login';
+import LoginPage from '@/views/Auth/Login';
 
 export const metadata = {
   title: 'Login',

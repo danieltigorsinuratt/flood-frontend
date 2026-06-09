@@ -1,4 +1,4 @@
-import DevicesCreatePage from '@/pages/Monitoring/Devices/Create';
+import DevicesCreatePage from '@/views/Monitoring/Devices/Create';
 
 export const metadata = {
   title: 'Tambah Perangkat',

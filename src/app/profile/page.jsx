@@ -1,4 +1,4 @@
-import ProfileEditPage from '@/pages/Profile/Edit';
+import ProfileEditPage from '@/views/Profile/Edit';
 
 export const metadata = {
   title: 'Edit Profil',

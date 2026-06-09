@@ -1,10 +1,7 @@
-import DevicesEditPage from '@/pages/Monitoring/Devices/Edit';
+'use client';
 
-export const metadata = {
-  title: 'Monitoring — Edit Perangkat',
-};
+import DevicesEditPage from '@/views/Monitoring/Devices/Edit';
 
-export default async function Page({ params }) {
-  const { id } = await params;
-  return <DevicesEditPage deviceId={id} />;
+export default function Page() {
+  return <DevicesEditPage />;
 }

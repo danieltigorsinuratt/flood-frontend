@@ -1,55 +1,114 @@
 'use client';
 
-import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import {
+    createContext,
+    useCallback,
+    useContext,
+    useMemo,
+    useState,
+} from 'react';
 
-const KEY = 'iot-api-base-url';
+const STORAGE_KEY = 'iot-flood-api-base-url';
 
-const IotApiHostContext = createContext({
-  baseUrl: '',
-  ingestUrl: '',
-  saveIotApiBase: () => ({ ok: false, error: 'Not mounted' }),
-  clearBaseUrl: () => {},
-});
-
-export function IotApiHostProvider({ children }) {
-  const [baseUrl, setBaseUrl] = useState('');
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setBaseUrl(localStorage.getItem(KEY) || '');
+export function normalizeIotApiBase(input) {
+    const t = (input ?? '').trim();
+    if (!t) {
+        return '';
     }
-  }, []);
-
-  const saveIotApiBase = useCallback((value) => {
-    const trimmed = (value || '').trim();
-    if (!trimmed) {
-      return { ok: false, error: 'URL tidak boleh kosong.' };
+    let candidate = t;
+    if (!/^https?:\/\//i.test(candidate)) {
+        candidate = `http://${candidate}`;
     }
     try {
-      const url = new URL(trimmed);
-      const origin = url.origin;
-      localStorage.setItem(KEY, origin);
-      setBaseUrl(origin);
-      return { ok: true };
+        return new URL(candidate).origin;
     } catch {
-      return { ok: false, error: 'URL tidak valid. Contoh: http://127.0.0.1:8000' };
+        return '';
     }
-  }, []);
+}
 
-  const clearBaseUrl = useCallback(() => {
-    localStorage.removeItem(KEY);
-    setBaseUrl('');
-  }, []);
+function readStoredBase() {
+    if (typeof window === 'undefined') {
+        return '';
+    }
+    return normalizeIotApiBase(localStorage.getItem(STORAGE_KEY) || '');
+}
 
-  const ingestUrl = baseUrl ? `${baseUrl}/api/ingest` : '/api/ingest';
+const IotApiHostContext = createContext(null);
 
-  return (
-    <IotApiHostContext.Provider value={{ baseUrl, ingestUrl, saveIotApiBase, clearBaseUrl }}>
-      {children}
-    </IotApiHostContext.Provider>
-  );
+export function IotApiHostProvider({ children }) {
+    const [baseUrl, setBaseUrlState] = useState(readStoredBase);
+
+    const saveIotApiBase = useCallback((input) => {
+        const raw = (input ?? '').trim();
+        if (!raw) {
+            localStorage.removeItem(STORAGE_KEY);
+            setBaseUrlState('');
+            return { ok: true };
+        }
+        const n = normalizeIotApiBase(input);
+        if (!n) {
+            return {
+                ok: false,
+                error: 'URL tidak valid. Contoh: http://192.168.1.10:8000 atau https://api.domain.com',
+            };
+        }
+        localStorage.setItem(STORAGE_KEY, n);
+        setBaseUrlState(n);
+        return { ok: true };
+    }, []);
+
+    const clearBaseUrl = useCallback(() => {
+        localStorage.removeItem(STORAGE_KEY);
+        setBaseUrlState('');
+    }, []);
+
+    const resolveUrl = useCallback(
+        (ziggyPath) => {
+            const p = String(ziggyPath ?? '');
+            if (!baseUrl) {
+                return p;
+            }
+            if (p.startsWith('http://') || p.startsWith('https://')) {
+                return p;
+            }
+            return `${baseUrl}${p.startsWith('/') ? p : `/${p}`}`;
+        },
+        [baseUrl],
+    );
+
+    const ingestUrl = useMemo(() => {
+        const origin =
+            baseUrl ||
+            (typeof window !== 'undefined' ? window.location.origin : '');
+        if (!origin) {
+            return '/api/ingest';
+        }
+        return `${origin.replace(/\/$/, '')}/api/ingest`;
+    }, [baseUrl]);
+
+    const value = useMemo(
+        () => ({
+            baseUrl,
+            saveIotApiBase,
+            clearBaseUrl,
+            resolveUrl,
+            ingestUrl,
+            isCustomHost: Boolean(baseUrl),
+        }),
+        [baseUrl, saveIotApiBase, clearBaseUrl, resolveUrl, ingestUrl],
+    );
+
+    return (
+        <IotApiHostContext.Provider value={value}>
+            {children}
+        </IotApiHostContext.Provider>
+    );
 }
 
 export function useIotApiHost() {
-  return useContext(IotApiHostContext);
+    const ctx = useContext(IotApiHostContext);
+    if (!ctx) {
+        throw new Error('useIotApiHost harus dipakai di dalam IotApiHostProvider');
+    }
+    return ctx;
 }

@@ -1,4 +1,4 @@
-import CommandsPage from '@/pages/Monitoring/Commands/Index';
+import CommandsPage from '@/views/Monitoring/Commands/Index';
 
 export const metadata = {
   title: 'Command History',

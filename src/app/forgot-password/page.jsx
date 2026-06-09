@@ -1,4 +1,4 @@
-import ForgotPasswordPage from '@/pages/Auth/ForgotPassword';
+import ForgotPasswordPage from '@/views/Auth/ForgotPassword';
 
 export const metadata = {
   title: 'Lupa Password',

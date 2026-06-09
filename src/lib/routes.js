@@ -6,31 +6,37 @@
 const ROUTES = {
   // Dashboard
   'dashboard': '/dashboard',
-  'dashboard.dataset': '/api/dashboard/dataset',
+  'dashboard.dataset': '/dashboard/dataset',
   'dashboard.riwayat': '/dashboard/riwayat',
   'dashboard.download': '/dashboard/download',
+  'dashboard.download.excel': '/dashboard/download/excel',
   'dashboard.kalender': '/dashboard/kalender',
-  'dashboard.iot-connectivity': '/api/dashboard/iot-connectivity',
-  'dashboard.firmware-api-host': '/api/dashboard/firmware-api-host',
-  'dashboard.commands.send': '/api/dashboard/commands/send',
-  'dashboard.user-layout.store': '/api/dashboard/user-layout',
-  'dashboard.user-layout.destroy': '/api/dashboard/user-layout',
-  'dashboard.riwayat.clear-data': '/api/dashboard/riwayat/clear-data',
+  'dashboard.kalender.data': '/dashboard/kalender/data',
+  'dashboard.iot-connectivity': '/dashboard/iot-connectivity',
+  'dashboard.firmware-api-host': '/dashboard/firmware-api-host',
+  'dashboard.commands.send': '/dashboard/commands/send',
+  'dashboard.user-layout.show': '/dashboard/user-layout',
+  'dashboard.user-layout.store': '/dashboard/user-layout',
+  'dashboard.user-layout.destroy': '/dashboard/user-layout',
+  'dashboard.riwayat.clear-data': '/dashboard/riwayat/clear-data',
 
   // Landing
   'landing.chart-data': '/landing/chart-data',
 
-  // Monitoring (admin)
+  // Monitoring (admin) — halaman
   'monitoring.devices.index': '/monitoring/devices',
   'monitoring.devices.create': '/monitoring/devices/create',
+  'monitoring.devices.edit': '/monitoring/devices/:id/edit',
+  'monitoring.devices.show': '/api/monitoring/devices/:id',
   'monitoring.devices.list': '/api/monitoring/devices',
   'monitoring.devices.store': '/api/monitoring/devices',
-  'monitoring.devices.edit': '/monitoring/devices/:id/edit',
   'monitoring.devices.update': '/api/monitoring/devices/:id',
   'monitoring.devices.destroy': '/api/monitoring/devices/:id',
-  'monitoring.sensor-data.index': '/api/monitoring/sensor-data',
+  'monitoring.sensor-data.index': '/monitoring/sensor-data',
+  'monitoring.sensor-data.list': '/api/monitoring/sensor-data',
   'monitoring.sensor-data.destroy': '/api/monitoring/sensor-data/:id',
-  'monitoring.commands.index': '/api/monitoring/commands',
+  'monitoring.commands.index': '/monitoring/commands',
+  'monitoring.commands.list': '/api/monitoring/commands',
   'monitoring.commands.store': '/api/monitoring/commands',
   'monitoring.commands.executed': '/api/monitoring/commands/:id/executed',
   'monitoring.commands.destroy': '/api/monitoring/commands/:id',
@@ -54,10 +60,6 @@ const ROUTES = {
   'profile.destroy': '/api/profile',
 };
 
-/**
- * Halaman yang wajib login — redirect ke /login hanya di path ini.
- * Path publik (/, /login, /register, dll.) tidak di-redirect.
- */
 export function requiresAuth(pathname) {
   if (!pathname || pathname === '/') return false;
   return (
@@ -69,11 +71,6 @@ export function requiresAuth(pathname) {
   );
 }
 
-/**
- * @param {string} name - Nama route
- * @param {Record<string, string|number>} [params] - Parameter opsional
- * @returns {string} URL relatif
- */
 export function route(name, params = {}) {
   let path = ROUTES[name];
   if (!path) {

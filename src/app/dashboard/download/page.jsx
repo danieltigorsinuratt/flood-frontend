@@ -1,4 +1,4 @@
-import DownloadPage from '@/pages/Download';
+import DownloadPage from '@/views/Download';
 
 export const metadata = {
   title: 'Download Data',

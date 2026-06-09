@@ -1,4 +1,4 @@
-import VerifyEmailPage from '@/pages/Auth/VerifyEmail';
+import VerifyEmailPage from '@/views/Auth/VerifyEmail';
 
 export const metadata = {
   title: 'Verify Email',

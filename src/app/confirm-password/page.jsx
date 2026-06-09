@@ -1,4 +1,4 @@
-import ConfirmPasswordPage from '@/pages/Auth/ConfirmPassword';
+import ConfirmPasswordPage from '@/views/Auth/ConfirmPassword';
 
 export const metadata = {
   title: 'Confirm Password',

@@ -1,6 +1,7 @@
-import { useAuth } from '@/contexts/AuthContext';
-import { route } from '@/lib/routes';
+'use client';
+
 import Link from 'next/link';
+import { route } from '@/lib/routes';
 import { motion, useReducedMotion } from 'framer-motion';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { formatDateTimeWib } from '@/lib/wibTime';
@@ -94,8 +95,7 @@ function buildStaticWaveChart(timeOffset) {
 /**
  * Hero: glassmorphism + area chart dari data sensor (polling + Echo, sama sumber dengan dashboard).
  */
-export default function Hero({ canLogin = true, canRegister = true }) {
-    const { user } = useAuth();
+export default function Hero({ auth, canLogin, canRegister }) {
     const reduceMotion = useReducedMotion();
     const [timeOffset, setTimeOffset] = useState(0);
     const svgRef = useRef(null);
@@ -211,7 +211,7 @@ export default function Hero({ canLogin = true, canRegister = true }) {
                         >
                             <Link
                                 href={
-                                    user ? route('dashboard') : route('login')
+                                    auth.user ? route("dashboard") : route("login")
                                 }
                                 className="rounded-[16px] bg-sky-500 px-8 py-4 text-lg font-semibold text-white shadow-lg shadow-sky-900/30 transition hover:bg-sky-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300"
                             >

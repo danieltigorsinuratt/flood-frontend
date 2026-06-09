@@ -11,9 +11,9 @@ import {
 } from '@/lib/dashboardWidgetDefaults';
 import axios from '@/lib/axios';
 import { route } from '@/lib/routes';
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-
+import { GridStack } from 'gridstack';
 import 'gridstack/dist/gridstack.min.css';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 export default function DashboardGridLayout({
     userLayout,
@@ -142,16 +142,27 @@ export default function DashboardGridLayout({
     useLayoutEffect(() => {
         const host = containerRef.current;
         if (!host || gridInitedRef.current) {
-            return undefined;
+            return;
         }
+        const g = GridStack.init(
+            {
+                column: 12,
+                cellHeight: 72,
+                float: true,
+                margin: 4,
+                minRow: 1,
+            },
+            host,
+        );
+        gridRef.current = g;
+        gridInitedRef.current = true;
+        /** Hanya setelah drag/resize selesai — `change` saat drag masih jalan bisa memicu React + g.update() dan mengembalikan item ke posisi lama. */
+        const persistLayout = () => handleGridChangeRef.current();
+        g.on('dragstop', persistLayout);
+        g.on('resizestop', persistLayout);
 
-        let cancelled = false;
-        let ro = null;
         let resizeRaf = null;
-        let gridInstance = null;
-        let onWindowResize = null;
-
-        const scheduleResize = (g) => {
+        const scheduleResize = () => {
             if (resizeRaf != null) {
                 return;
             }
@@ -160,6 +171,10 @@ export default function DashboardGridLayout({
                 g.onResize?.();
             });
         };
+        const ro = new ResizeObserver(scheduleResize);
+        ro.observe(host);
+        window.addEventListener('resize', scheduleResize);
+        scheduleResize();
 
         const flushPendingSave = () => {
             if (!saveTimerRef.current) {
@@ -186,51 +201,26 @@ export default function DashboardGridLayout({
                 body,
             }).catch(() => {});
         };
-
         window.addEventListener('pagehide', flushPendingSave);
 
-        import('gridstack').then(({ GridStack }) => {
-            if (cancelled || gridInitedRef.current || !containerRef.current) {
-                return;
-            }
-            const g = GridStack.init(
-                {
-                    column: 12,
-                    cellHeight: 72,
-                    float: true,
-                    margin: 4,
-                    minRow: 1,
-                },
-                host,
-            );
-            gridInstance = g;
-            gridRef.current = g;
-            gridInitedRef.current = true;
-            const persistLayout = () => handleGridChangeRef.current();
-            g.on('dragstop', persistLayout);
-            g.on('resizestop', persistLayout);
-            onWindowResize = () => scheduleResize(g);
-            ro = new ResizeObserver(onWindowResize);
-            ro.observe(host);
-            window.addEventListener('resize', onWindowResize);
-            scheduleResize(g);
-        }).catch(() => {});
-
         return () => {
-            cancelled = true;
             if (resizeRaf != null) {
                 cancelAnimationFrame(resizeRaf);
                 resizeRaf = null;
             }
-            ro?.disconnect();
-            if (onWindowResize) {
-                window.removeEventListener('resize', onWindowResize);
-            }
+            ro.disconnect();
+            window.removeEventListener('resize', scheduleResize);
             window.removeEventListener('pagehide', flushPendingSave);
-            if (gridInstance) {
-                gridInstance.off('dragstop');
-                gridInstance.off('resizestop');
-                gridInstance.destroy(true);
+            const grid = gridRef.current;
+            if (grid) {
+                try {
+                    grid.off('dragstop');
+                    grid.off('resizestop');
+                    // DOM dikelola React — destroy(false) hindari removeChild error (Next Strict Mode)
+                    grid.destroy(false);
+                } catch {
+                    /* abaikan */
+                }
             }
             gridRef.current = null;
             gridInitedRef.current = false;

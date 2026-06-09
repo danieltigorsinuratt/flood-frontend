@@ -21,6 +21,7 @@ export function AuthProvider({ children }) {
 
   const refresh = useCallback(async () => {
     try {
+      await axios.get('/sanctum/csrf-cookie');
       const { data } = await axios.get('/api/user');
       setUser(data.user ?? data);
       setIsAdmin(Boolean(data.is_admin ?? data.isAdmin));

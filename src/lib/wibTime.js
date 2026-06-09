@@ -1,49 +1,50 @@
-/**
- * Helper format waktu WIB (UTC+7).
- * Cocok untuk Next.js App Router (server & client).
- */
-
+/** Waktu Indonesia Barat (UTC+7) — dipakai konsisten di UI. */
 export const WIB_TIMEZONE = 'Asia/Jakarta';
-const WIB_TZ = WIB_TIMEZONE;
+
+const locale = 'id-ID';
 
 /**
- * Format Date ke waktu WIB.
- * @param {string | Date | null | undefined} value
- * @param {Intl.DateTimeFormatOptions} options
- * @returns {string}
+ * @param {string|number|Date} dateInput
+ * @param {Intl.DateTimeFormatOptions} [options]
  */
-export function formatTimeWib(value, options = { timeStyle: 'medium' }) {
-  if (!value) return '—';
-  const d = typeof value === 'string' ? new Date(value) : value;
-  if (isNaN(d.getTime())) return '—';
-  return new Intl.DateTimeFormat('id-ID', {
-    ...options,
-    timeZone: WIB_TZ,
-  }).format(d);
+export function formatDateTimeWib(dateInput, options = {}) {
+    const d = dateInput instanceof Date ? dateInput : new Date(dateInput);
+    if (Number.isNaN(d.getTime())) {
+        return '—';
+    }
+    return d.toLocaleString(locale, {
+        timeZone: WIB_TIMEZONE,
+        ...options,
+    });
 }
 
 /**
- * Format Date ke tanggal + waktu WIB.
- * @param {string | Date | null | undefined} value
- * @param {Intl.DateTimeFormatOptions} options
- * @returns {string}
+ * @param {string|number|Date} dateInput
+ * @param {Intl.DateTimeFormatOptions} [options]
  */
-export function formatDateTimeWib(
-  value,
-  options = { dateStyle: 'short', timeStyle: 'medium' },
-) {
-  if (!value) return '—';
-  const d = typeof value === 'string' ? new Date(value) : value;
-  if (isNaN(d.getTime())) return '—';
-  return new Intl.DateTimeFormat('id-ID', {
-    ...options,
-    timeZone: WIB_TZ,
-  }).format(d);
+export function formatTimeWib(dateInput, options = {}) {
+    const d = dateInput instanceof Date ? dateInput : new Date(dateInput);
+    if (Number.isNaN(d.getTime())) {
+        return '—';
+    }
+    return d.toLocaleTimeString(locale, {
+        timeZone: WIB_TIMEZONE,
+        ...options,
+    });
 }
 
 /**
- * Format Date ke tanggal saja (WIB).
+ * Tahun / bulan / hari saat ini di WIB (untuk kalender, dsb.).
+ * @param {Date} [from]
+ * @returns {{ year: number, month: number, day: number }}
  */
-export function formatDateWib(value, options = { dateStyle: 'medium' }) {
-  return formatTimeWib(value, options);
+export function getWibYmd(from = new Date()) {
+    const s = new Intl.DateTimeFormat('en-CA', {
+        timeZone: WIB_TIMEZONE,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+    }).format(from);
+    const [y, m, day] = s.split('-').map((x) => parseInt(x, 10));
+    return { year: y, month: m, day };
 }

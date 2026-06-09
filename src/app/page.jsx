@@ -1,4 +1,4 @@
-import WelcomePage from '@/pages/Welcome';
+import WelcomePage from '@/views/Welcome';
 
 export const metadata = {
   title: 'Flood Monitoring System',

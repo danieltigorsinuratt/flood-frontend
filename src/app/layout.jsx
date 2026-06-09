@@ -1,4 +1,5 @@
 import './globals.css';
+import ClientInit from '@/components/ClientInit';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { IotApiHostProvider } from '@/contexts/IotApiHostContext';
 
@@ -16,6 +17,7 @@ export default function RootLayout({ children }) {
       <body className="min-h-full bg-slate-950 text-white antialiased">
         <AuthProvider>
           <IotApiHostProvider>
+            <ClientInit />
             {children}
           </IotApiHostProvider>
         </AuthProvider>

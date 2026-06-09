@@ -1,4 +1,4 @@
-import DevicesIndexPage from '@/pages/Monitoring/Devices/Index';
+import DevicesIndexPage from '@/views/Monitoring/Devices/Index';
 
 export const metadata = {
   title: 'Monitoring — Perangkat',

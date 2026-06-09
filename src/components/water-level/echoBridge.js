@@ -1,7 +1,7 @@
 import axios from '@/lib/axios';
 
 /**
- * Polling ringan ke /api/water-levels (data sensor dari database) → CustomEvent agar semua komponen sinkron.
+ * Polling ringan ke /api/water-levels (data dummy server) → CustomEvent agar semua komponen sinkron.
  * Tidak memakai database; tidak bergantung Echo/Reverb untuk channel ini.
  */
 const EVENT = 'water-level-updated';
