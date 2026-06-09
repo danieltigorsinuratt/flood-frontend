@@ -1,0 +1,29 @@
+'use client';
+
+import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
+import DeleteUserForm from './Partials/DeleteUserForm';
+import UpdatePasswordForm from './Partials/UpdatePasswordForm';
+import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
+
+export default function ProfileEditPage() {
+  return (
+    <AuthenticatedLayout
+      title="Profile"
+      header={<h2 className="text-xl font-semibold leading-tight text-white">Profile</h2>}
+    >
+      <div className="py-12">
+        <div className="mx-auto max-w-7xl space-y-6 sm:px-6 lg:px-8">
+          <div className="border border-slate-700 bg-slate-900 p-4 shadow sm:rounded-lg sm:p-8">
+            <UpdateProfileInformationForm className="max-w-xl" />
+          </div>
+          <div className="border border-slate-700 bg-slate-900 p-4 shadow sm:rounded-lg sm:p-8">
+            <UpdatePasswordForm className="max-w-xl" />
+          </div>
+          <div className="border border-slate-700 bg-slate-900 p-4 shadow sm:rounded-lg sm:p-8">
+            <DeleteUserForm className="max-w-xl" />
+          </div>
+        </div>
+      </div>
+    </AuthenticatedLayout>
+  );
+}
