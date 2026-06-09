@@ -1,6 +1,6 @@
 import axios from '@/lib/axios';
 
-const API = '/api/water-levels';
+const API = `${process.env.NEXT_PUBLIC_API_URL}/api/water-levels`;
 
 /**
  * @param {number} valueCm

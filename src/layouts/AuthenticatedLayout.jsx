@@ -118,7 +118,7 @@ export default function AuthenticatedLayout({
             const tidHost = window.setTimeout(() => ctlHost.abort(), 6000);
             let hostOk = false;
             try {
-                const res = await fetch(`${origin}/api/water-levels`, {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/water-levels`, {
                     method: 'GET',
                     signal: ctlHost.signal,
                     credentials: 'omit',
