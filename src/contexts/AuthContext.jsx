@@ -49,7 +49,6 @@ export function AuthProvider({ children }) {
     localStorage.setItem('auth_token', data.token);
     setUser(data.user ?? data);
     setIsAdmin(Boolean(data.is_admin ?? data.isAdmin));
-    setFlash({ success: 'Login berhasil.' });
     return data;
   }, []);
 
