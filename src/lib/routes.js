@@ -13,7 +13,6 @@ const ROUTES = {
   'dashboard.kalender': '/dashboard/kalender',
   'dashboard.kalender.data': '/api/dashboard/kalender/data',
   'dashboard.iot-connectivity': '/api/dashboard/iot-connectivity',
-  'dashboard.firmware-api-host': '/api/dashboard/firmware-api-host',
   'dashboard.commands.send': '/api/dashboard/commands/send',
   'dashboard.user-layout.show': '/api/dashboard/user-layout',
   'dashboard.user-layout.store': '/api/dashboard/user-layout',

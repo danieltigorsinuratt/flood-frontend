@@ -5,7 +5,6 @@ const backendUrl = process.env.BACKEND_URL || 'http://127.0.0.1:8000';
 const dashboardApiRewrites = [
   'dataset',
   'iot-connectivity',
-  'firmware-api-host',
   'kalender/data',
   'download/excel',
   'riwayat/clear-data',

@@ -1,10 +1,9 @@
 'use client';
 
-import axios from '@/lib/axios';
 import ApplicationLogo from '@/components/ApplicationLogo';
 import Dropdown from '@/components/Dropdown';
 import { useAuth } from '@/contexts/AuthContext';
-import { useIotApiHost } from '@/contexts/IotApiHostContext';
+import axios from '@/lib/axios';
 import { route } from '@/lib/routes';
 import {
     AnimatePresence,
@@ -95,48 +94,23 @@ export default function AuthenticatedLayout({
         (a) => `rgba(71, 85, 105, ${a})`,
     );
 
-    const {
-        baseUrl: iotApiBaseUrl,
-        saveIotApiBase,
-        clearBaseUrl: clearIotApiBase,
-        ingestUrl: iotIngestUrl,
-    } = useIotApiHost();
-
-    /** null = belum dicek; true = host API menjawab & telemetri hidup; false = lainnya */
-    const [apiIndicator, setApiIndicator] = useState(null);
+    /** null = memeriksa; true = telemetri hidup; false = terputus */
+    const [iotLive, setIotLive] = useState(null);
 
     useEffect(() => {
         let cancelled = false;
-        const origin = (
-            iotApiBaseUrl || (typeof window !== 'undefined' ? window.location.origin : '')
-        ).replace(/\/$/, '');
-        if (!origin) {
-            return;
-        }
 
         const check = async () => {
-            const ctlHost = new AbortController();
-            const tidHost = window.setTimeout(() => ctlHost.abort(), 6000);
-            let hostOk = false;
             try {
-               await axios.get('/api/water-levels', { signal: ctlHost.signal });
-            hostOk = true;
+                // Sumber sama dengan banner "Koneksi IoT Terhubung/Terputus" di dashboard
+                const { data } = await axios.get(route('dashboard.iot-connectivity'), {
+                    params: { online_timeout: 12 },
+                });
+                if (!cancelled) {
+                    setIotLive(Boolean(data?.live));
+                }
             } catch {
-                hostOk = false;
-            } finally {
-                window.clearTimeout(tidHost);
-            }
-
-            let live = false;
-            try {
-                const { data } = await axios.get(route('dashboard.iot-connectivity'));
-                live = Boolean(data?.live);
-            } catch {
-                live = false;
-            }
-
-            if (!cancelled) {
-                setApiIndicator(hostOk && live);
+                // Jangan paksa offline saat sesi/proxy gagal — hindari false negative
             }
         };
 
@@ -146,40 +120,7 @@ export default function AuthenticatedLayout({
             cancelled = true;
             window.clearInterval(interval);
         };
-    }, [iotApiBaseUrl]);
-
-    const [apiModalOpen, setApiModalOpen] = useState(false);
-    const [apiDraft, setApiDraft] = useState('');
-    const [apiFormError, setApiFormError] = useState(null);
-
-    useEffect(() => {
-        if (!apiModalOpen) {
-            return;
-        }
-        setApiFormError(null);
-        let cancelled = false;
-
-        const loadFromFirmware = async () => {
-            try {
-                const { data } = await axios.get(route('dashboard.firmware-api-host'));
-                if (cancelled) return;
-                if (data?.origin) {
-              setApiDraft(data.origin);
-              return;
-            }
-            } catch {
-                /* abaikan */
-            }
-            if (!cancelled) {
-                setApiDraft(iotApiBaseUrl || '');
-            }
-        };
-
-        void loadFromFirmware();
-        return () => {
-            cancelled = true;
-        };
-    }, [apiModalOpen, iotApiBaseUrl]);
+    }, []);
 
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [desktopSidebarCollapsed, setDesktopSidebarCollapsed] = useState(false);
@@ -398,45 +339,6 @@ export default function AuthenticatedLayout({
                         <p className="mb-2 mt-6 px-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
                             Integrasi
                         </p>
-                        <button
-                            type="button"
-                            onClick={() => {
-                                setApiModalOpen(true);
-                                closeMobile();
-                            }}
-                            className={
-                                'group flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium transition ' +
-                                (apiModalOpen
-                                    ? 'border-r-2 border-amber-400 bg-amber-500/15 text-amber-200'
-                                    : 'text-slate-200 hover:bg-slate-800 hover:text-white')
-                            }
-                        >
-                            <span className="min-w-0 flex-1 truncate">API</span>
-                            <span
-                                className={
-                                    'h-2 w-2 shrink-0 rounded-full ' +
-                                    (apiIndicator === true
-                                        ? 'bg-emerald-500'
-                                        : apiIndicator === false
-                                          ? 'bg-red-500'
-                                          : 'bg-slate-300')
-                                }
-                                title={
-                                    apiIndicator === true
-                                        ? 'Host API OK · telemetri hidup'
-                                        : apiIndicator === false
-                                          ? 'Merah: tidak ada telemetri baru atau host API tidak terjangkau'
-                                          : 'Memeriksa…'
-                                }
-                                aria-label={
-                                    apiIndicator === true
-                                        ? 'Host API OK dan telemetri hidup'
-                                        : apiIndicator === false
-                                          ? 'Telemetri tidak hidup atau API tidak terjangkau'
-                                          : 'Memeriksa koneksi'
-                                }
-                            />
-                        </button>
                         <SidebarNavLink
                             href={route('dashboard.download')}
                             active={path === '/dashboard/download'}
@@ -451,6 +353,36 @@ export default function AuthenticatedLayout({
                         >
                             <span>Kalender</span>
                         </SidebarNavLink>
+
+                        <div
+                            className="mt-4 flex items-center gap-2.5 px-3 py-2"
+                            title={
+                                iotLive === true
+                                    ? 'Telemetri sensor aktif'
+                                    : iotLive === false
+                                      ? 'Tidak ada telemetri baru'
+                                      : 'Memeriksa koneksi…'
+                            }
+                        >
+                            <span
+                                className={
+                                    'h-2.5 w-2.5 shrink-0 rounded-full ' +
+                                    (iotLive === true
+                                        ? 'bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.6)]'
+                                        : iotLive === false
+                                          ? 'bg-red-500 shadow-[0_0_6px_rgba(239,68,68,0.5)]'
+                                          : 'bg-slate-400')
+                                }
+                                aria-hidden
+                            />
+                            <span className="text-sm font-medium text-slate-200">
+                                {iotLive === true
+                                    ? 'online'
+                                    : iotLive === false
+                                      ? 'offline'
+                                      : '…'}
+                            </span>
+                        </div>
                     </nav>
                 </motion.aside>
 
@@ -602,113 +534,6 @@ export default function AuthenticatedLayout({
                 </div>
             </div>
 
-            {apiModalOpen ? (
-                <div
-                    className="fixed inset-0 z-[70] flex items-center justify-center bg-black/40 p-4"
-                    role="presentation"
-                    onClick={() => setApiModalOpen(false)}
-                >
-                    <div
-                        role="dialog"
-                        aria-modal="true"
-                        aria-labelledby="iot-api-host-title"
-                        className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-xl border border-slate-600 bg-slate-900 p-5 shadow-xl"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <h3
-                            id="iot-api-host-title"
-                            className="text-lg font-semibold text-white"
-                        >
-                            Host API dashboard dan IoT
-                        </h3>
-                       
-                        <label className="mt-4 block text-xs font-medium text-slate-300">
-                            Base URL (origin saja)
-                        </label>
-                        <p className="mt-1 text-[11px] leading-snug text-slate-400">
-                            Default diisi dari{' '}
-                            <code className="rounded bg-slate-800 px-1 text-[10px] text-slate-200">
-                                client/Flood_Monitoring_System.ino
-                            </code>{' '}
-                            (<code className="rounded bg-slate-800 px-1 text-[10px] text-slate-200">API_HOST</code>) saat dialog
-                            dibuka. Edit file itu, buka lagi dialog, lalu <strong>Simpan</strong> — tanpa tempel
-                            manual. Jika kolom kosong, Simpan juga memuat ulang dari file tersebut.
-                        </p>
-                        <input
-                            type="url"
-                            inputMode="url"
-                            autoComplete="url"
-                            placeholder="http://127.0.0.1:8000"
-                            className="mt-1 w-full rounded-md border border-slate-600 bg-slate-950 px-3 py-2 text-sm text-white shadow-sm placeholder:text-slate-500 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-                            value={apiDraft}
-                            onChange={(e) => {
-                                setApiDraft(e.target.value);
-                                setApiFormError(null);
-                            }}
-                        />
-                        {apiFormError ? (
-                            <p className="mt-2 text-sm text-red-400">{apiFormError}</p>
-                        ) : null}
-   
-                      
-                      
-                        <div className="mt-5 flex flex-wrap justify-end gap-2">
-                            <button
-                                type="button"
-                                className="rounded-md border border-slate-600 px-3 py-1.5 text-sm text-white hover:bg-slate-800"
-                                onClick={() => setApiModalOpen(false)}
-                            >
-                                Tutup
-                            </button>
-                            <button
-                                type="button"
-                                className="rounded-md border border-slate-600 px-3 py-1.5 text-sm text-white hover:bg-slate-800"
-                                onClick={() => {
-                                    clearIotApiBase();
-                                    setApiDraft('');
-                                    setApiFormError(null);
-                                    setApiModalOpen(false);
-                                }}
-                            >
-                                Pakai situs ini
-                            </button>
-                            <button
-                                type="button"
-                                className="rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-indigo-500"
-                                onClick={async () => {
-                                    let value = apiDraft.trim();
-                                    if (!value) {
-                                        try {
-                                            const { data } = await axios.get(route('dashboard.firmware-api-host'));
-                                            if (data?.origin) {
-                                                value = data.origin;
-                                                setApiDraft(data.origin);
-                                             }
-                                            } catch {
-                                            /* abaikan */
-                                        }
-                                    }
-                                    if (!value) {
-                                        setApiFormError(
-                                            'Isi URL atau pastikan client/Flood_Monitoring_System.ino berisi API_HOST.',
-                                        );
-                                        return;
-                                    }
-                                    const r = saveIotApiBase(value);
-                                    if (!r.ok) {
-                                        setApiFormError(r.error ?? 'Gagal menyimpan.');
-                                        return;
-                                    }
-                                    setApiFormError(null);
-                                    setApiModalOpen(false);
-                                }}
-                            >
-                                Simpan
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            ) : null}
         </div>
     );
 }
