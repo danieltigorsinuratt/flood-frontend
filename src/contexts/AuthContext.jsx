@@ -21,7 +21,6 @@ export function AuthProvider({ children }) {
 
   const refresh = useCallback(async () => {
     try {
-      await axios.get('/sanctum/csrf-cookie');
       const { data } = await axios.get('/api/user');
       setUser(data.user ?? data);
       setIsAdmin(Boolean(data.is_admin ?? data.isAdmin));
@@ -38,9 +37,8 @@ export function AuthProvider({ children }) {
   }, [refresh]);
 
   const login = useCallback(async (credentials) => {
-    // Ambil CSRF cookie dulu (Laravel Sanctum)
-    await axios.get('/sanctum/csrf-cookie');
     const { data } = await axios.post('/api/auth/login', credentials);
+    localStorage.setItem('auth_token', data.token);
     setUser(data.user ?? data);
     setIsAdmin(Boolean(data.is_admin ?? data.isAdmin));
     setFlash({ success: 'Login berhasil.' });
@@ -53,6 +51,7 @@ export function AuthProvider({ children }) {
     } catch {
       /* abaikan */
     }
+    localStorage.removeItem('auth_token');
     setUser(null);
     setIsAdmin(false);
     setFlash({});

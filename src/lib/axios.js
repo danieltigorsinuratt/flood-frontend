@@ -1,15 +1,9 @@
-/**
- * Konfigurasi global axios untuk komunikasi dengan backend Laravel.
- * - Otomatis set baseURL dari env
- * - Otomatis baca XSRF-TOKEN dari cookie dan kirim sebagai header
- * - Sertakan credentials (cookie) agar Laravel Sanctum bisa autentikasi
- */
 import { requiresAuth } from '@/lib/routes';
 import axiosLib from 'axios';
 
 const axios = axiosLib.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL || '',
-  withCredentials: true,
+  withCredentials: false,
   headers: {
     'X-Requested-With': 'XMLHttpRequest',
     Accept: 'application/json',
@@ -17,27 +11,28 @@ const axios = axiosLib.create({
   },
 });
 
-// Interceptor request: tambahkan XSRF-TOKEN dari cookie (Laravel Sanctum)
+// Interceptor request: tambahkan Bearer token dari localStorage
 axios.interceptors.request.use((config) => {
-  if (typeof document !== 'undefined') {
-    const match = document.cookie.match(/XSRF-TOKEN=([^;]+)/);
-    if (match) {
-      config.headers['X-XSRF-TOKEN'] = decodeURIComponent(match[1]);
+  if (typeof window !== 'undefined') {
+    const token = localStorage.getItem('auth_token');
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
     }
   }
   return config;
 });
 
-// Redirect ke login hanya di halaman yang wajib auth (dashboard, monitoring, profile)
+// Redirect ke login jika 401
 axios.interceptors.response.use(
   (response) => response,
   (error) => {
     const status = error.response?.status;
     if (
-      (status === 401 || status === 419) &&
+      status === 401 &&
       typeof window !== 'undefined' &&
       requiresAuth(window.location.pathname)
     ) {
+      localStorage.removeItem('auth_token');
       window.location.href = '/login';
     }
     return Promise.reject(error);
