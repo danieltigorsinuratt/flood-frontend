@@ -2,6 +2,7 @@
 
 import DashboardGridLayout from '@/components/FloodDashboard/DashboardGridLayout';
 import IotLiveNotifications from '@/components/FloodDashboard/IotLiveNotifications';
+import RealTimeSensorWidget from '@/components/RealTimeSensorWidget';
 import { useIotApiHost } from '@/contexts/IotApiHostContext';
 import { WIDGET_TYPE_OPTIONS_RINGKASAN } from '@/lib/dashboardWidgetDefaults';
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
@@ -128,6 +129,10 @@ export default function Dashboard() {
                 <div className="mx-auto max-w-7xl space-y-6 sm:px-6 lg:px-8">
                     <div className="px-4 sm:px-0">
                         <IotLiveNotifications iotConnectivity={dash.iot_connectivity} />
+                    </div>
+
+                    <div className="px-4 sm:px-0">
+                        <RealTimeSensorWidget />
                     </div>
 
                     <div className="px-4 sm:px-0">
