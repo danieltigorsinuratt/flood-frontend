@@ -2,6 +2,7 @@ import './globals.css';
 import ClientInit from '@/components/ClientInit';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { IotApiHostProvider } from '@/contexts/IotApiHostContext';
+import { SensorDataProvider } from '@/contexts/SensorDataContext';
 
 export const metadata = {
   title: {
@@ -17,8 +18,10 @@ export default function RootLayout({ children }) {
       <body className="min-h-full bg-slate-950 text-white antialiased">
         <AuthProvider>
           <IotApiHostProvider>
-            <ClientInit />
-            {children}
+            <SensorDataProvider>
+              <ClientInit />
+              {children}
+            </SensorDataProvider>
           </IotApiHostProvider>
         </AuthProvider>
       </body>

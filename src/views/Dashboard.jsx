@@ -3,6 +3,7 @@
 import DashboardGridLayout from '@/components/FloodDashboard/DashboardGridLayout';
 import IotLiveNotifications from '@/components/FloodDashboard/IotLiveNotifications';
 import Flood3DScene from '@/components/water-level/3d';
+import RealTimeSensorWidget from '@/components/RealTimeSensorWidget';
 import { useIotApiHost } from '@/contexts/IotApiHostContext';
 import { WIDGET_TYPE_OPTIONS_RINGKASAN } from '@/lib/dashboardWidgetDefaults';
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
@@ -134,6 +135,10 @@ export default function Dashboard() {
                     {/* 3D Flood Visualization */}
                     <div className="px-4 sm:px-0">
                         <Flood3DScene sensorId={null} height={400} />
+                    </div>
+
+                    <div className="px-4 sm:px-0">
+                        <RealTimeSensorWidget />
                     </div>
 
                     <div className="px-4 sm:px-0">

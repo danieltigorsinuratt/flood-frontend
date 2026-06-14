@@ -209,15 +209,7 @@ export default function Hero({ auth, canLogin, canRegister }) {
                                     : { ...headingTransition, delay: 0.2 }
                             }
                             className="mt-10 flex items-center gap-x-6"
-                        >
-                            <Link
-                                href={
-                                    auth.user ? route("dashboard") : route("login")
-                                }
-                                className="rounded-[16px] bg-sky-500 px-8 py-4 text-lg font-semibold text-white shadow-lg shadow-sky-900/30 transition hover:bg-sky-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300"
-                            >
-                                Buka dashboard
-                            </Link>
+                        > 
                         </motion.div>
                     </div>
                 </div>
