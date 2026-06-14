@@ -404,7 +404,7 @@ export default function Welcome() {
                         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
                             <div>
                                 <div className="flex items-center gap-2">
-                                    <img src="/img/logo.png" alt="" className="h-8 w-auto object-contain invert" />
+                                    <img src="/img/logo.png" alt="" className="h-8 w-auto object-contain" />
                                     <span className="text-lg font-bold text-white">Flood Monitoring</span>
                                 </div>
                                 <p className="mt-3 text-sm leading-relaxed text-gray-400">
