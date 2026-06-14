@@ -140,7 +140,7 @@ export default function Flood3DScene({
                 style={{ width: '100%', height: '100%' }}
                 gl={{ alpha: true }}
                 onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
-                camera={{ position: [0, 1.5, 3.5], fov: 28 }}
+                camera={{ position: [0, 4, 5], fov: 35 }}
             >
                 <Suspense fallback={null}>
                     <Scene waterLevel={waterLevel} />
