@@ -87,7 +87,7 @@ export default function Welcome() {
     const [activeSection, setActiveSection] = useState('hero');
 
     useEffect(() => {
-        const sections = ['hero', 'manfaat', 'tujuan', 'monitoring'];
+        const sections = ['hero', 'monitoring', 'alur-sistem', 'manfaat', 'tujuan'];
         const observers = [];
 
         sections.forEach((id) => {
@@ -126,9 +126,10 @@ export default function Welcome() {
                     </Link>
                     <nav className="hidden items-center gap-6 text-sm font-medium sm:flex">
                         <a href="#hero" className={`transition ${activeSection === 'hero' ? 'text-black font-bold' : 'text-gray-500 hover:text-black'}`}>Beranda</a>
+                        <a href="#monitoring" className={`transition ${activeSection === 'monitoring' ? 'text-black font-bold' : 'text-gray-500 hover:text-black'}`}>Live Monitoring</a>
+                        <a href="#alur-sistem" className={`transition ${activeSection === 'alur-sistem' ? 'text-black font-bold' : 'text-gray-500 hover:text-black'}`}>Alur Sistem</a>
                         <a href="#manfaat" className={`transition ${activeSection === 'manfaat' ? 'text-black font-bold' : 'text-gray-500 hover:text-black'}`}>Manfaat</a>
                         <a href="#tujuan" className={`transition ${activeSection === 'tujuan' ? 'text-black font-bold' : 'text-gray-500 hover:text-black'}`}>Tujuan</a>
-                        <a href="#monitoring" className={`transition ${activeSection === 'monitoring' ? 'text-black font-bold' : 'text-gray-500 hover:text-black'}`}>Live Monitoring</a>
                     </nav>
                     <div className="w-[180px]"></div>
                 </motion.header>
@@ -171,12 +172,16 @@ export default function Welcome() {
                             </div>
                         </div>
                     </section>
-<section id="monitoring" className="flex min-h-screen items-center bg-gray-50 px-4 py-20 sm:px-6 lg:px-8">
-                        <div className="mx-auto max-w-6xl">
-                            <SectionHeading
-                                title="Pantau Ketinggian Air Terkini"
-                                subtitle="Data sensor diperbarui setiap 5 detik secara otomatis"
-                            />
+                    <section id="monitoring" className="flex min-h-screen items-center bg-gray-50 px-4 py-20 sm:px-6 lg:px-8">
+                        <div className="mx-auto w-full max-w-6xl">
+                            <div className="mb-12 text-center">
+                                <h2 className="text-3xl font-extrabold tracking-tight text-black sm:text-4xl lg:text-5xl">
+                                    Pantau Ketinggian Air Terkini
+                                </h2>
+                                <p className="mx-auto mt-4 max-w-2xl text-base text-gray-500 sm:text-lg">
+                                    Data sensor diperbarui setiap 5 detik secara otomatis
+                                </p>
+                            </div>
 
                             <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
                                 <motion.div
@@ -185,27 +190,27 @@ export default function Welcome() {
                                     whileInView="visible"
                                     viewport={{ once: true }}
                                     transition={{ duration: 0.5 }}
-                                    className="flex flex-col justify-between rounded-2xl border border-black bg-white p-6 shadow-lg"
+                                    className="flex flex-col justify-between rounded-2xl border border-black bg-white p-8 shadow-lg"
                                 >
                                     <div>
-                                        <h3 className="text-lg font-bold text-black">Ketinggian Air</h3>
-                                        <p className="text-xs text-gray-500">
+                                        <h3 className="text-xl font-bold text-black">Ketinggian Air</h3>
+                                        <p className="text-sm text-gray-500">
                                             {loadingData ? 'Menghubungkan ke IoT...' : 'Sinkronisasi Aktif (5s)'}
                                         </p>
                                     </div>
-                                    <div className="my-8 text-center">
-                                        <span className="text-6xl font-black tracking-tight text-black">
-                                            {waterLevel} <span className="text-2xl font-medium text-gray-400">cm</span>
+                                    <div className="my-12 text-center">
+                                        <span className="text-7xl font-black tracking-tight text-black">
+                                            {waterLevel} <span className="text-3xl font-medium text-gray-400">cm</span>
                                         </span>
                                     </div>
                                     <div className="text-center">
                                         <span
-                                            className={`inline-flex items-center rounded-full px-4 py-1.5 text-sm font-semibold ring-1 ring-inset ${
+                                            className={`inline-flex items-center rounded-full px-6 py-2 text-base font-semibold ${
                                                 statusBanjir.toUpperCase() === 'NORMAL'
-                                                    ? 'bg-black text-white ring-black'
+                                                    ? 'bg-black text-white'
                                                     : statusBanjir.toUpperCase() === 'SIAGA'
-                                                      ? 'bg-gray-200 text-gray-700 ring-gray-400'
-                                                      : 'bg-red-500 text-white ring-red-500'
+                                                      ? 'bg-gray-200 text-gray-700'
+                                                      : 'bg-red-500 text-white'
                                             }`}
                                         >
                                             Status: {statusBanjir}
@@ -219,18 +224,18 @@ export default function Welcome() {
                                     whileInView="visible"
                                     viewport={{ once: true }}
                                     transition={{ duration: 0.5, delay: 0.1 }}
-                                    className="rounded-2xl border border-black bg-white p-6 shadow-lg lg:col-span-2"
+                                    className="rounded-2xl border border-black bg-white p-8 shadow-lg lg:col-span-2"
                                 >
-                                    <div className="mb-4 flex items-center justify-between">
-                                        <h3 className="text-lg font-bold text-black">
+                                    <div className="mb-6 flex items-center justify-between">
+                                        <h3 className="text-xl font-bold text-black">
                                             Grafik Tinggi Air {chartDevice ? `— ${chartDevice}` : ''}
                                         </h3>
-                                        <span className="inline-flex items-center gap-1.5 rounded-md bg-black px-2.5 py-1 text-xs font-medium text-white">
-                                            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-green-400"></span>
+                                        <span className="inline-flex items-center gap-1.5 rounded-md bg-black px-3 py-1.5 text-sm font-medium text-white">
+                                            <span className="h-2 w-2 animate-pulse rounded-full bg-green-400"></span>
                                             Live
                                         </span>
                                     </div>
-                                    <div className="w-full rounded-xl border border-gray-200 bg-gray-50 p-2">
+                                    <div className="w-full rounded-xl border border-gray-200 bg-gray-50 p-4">
                                         <WaterLevelChart chartReadings={chartReadings} chartDevice={chartDevice} />
                                     </div>
                                 </motion.div>
@@ -238,6 +243,51 @@ export default function Welcome() {
                         </div>
                     </section>
                     
+                      <section id="alur-sistem" className="flex min-h-screen items-center bg-gray-100 px-4 py-24 sm:px-8 lg:px-12">
+                        <div className="mx-auto max-w-7xl">
+                            <div className="mb-16">
+                                <span className="text-xl font-bold uppercase tracking-widest text-black">Alur Sistem</span>
+                            </div>
+
+                            <div className="flex">
+                                {[
+                                    {
+                                        img: '/alat/sensor.svg',
+                                        title: 'SENSOR',
+                                        desc: 'Sensor ultrasonik mendeteksi ketinggian air di lokasi pemantauan.',
+                                    },
+                                    {
+                                        img: '/alat/API.svg',
+                                        title: 'API',
+                                        desc: 'API backend memproses data dari sensor dan menyiapkan untuk disimpan.',
+                                    },
+                                    {
+                                        img: '/alat/database.svg',
+                                        title: 'DATABASE',
+                                        desc: 'Data tersimpan aman di database untuk riwayat dan analisis.',
+                                    },
+                                    {
+                                        img: '/alat/cloud.svg',
+                                        title: 'CLOUD',
+                                        desc: 'Server cloud menyimpan dan mengelola data secara terpusat.',
+                                    },
+                                    {
+                                        img: '/alat/web.svg',
+                                        title: 'DASHBOARD',
+                                        desc: 'Data ditampilkan real-time melalui dashboard web interaktif.',
+                                    },
+                                ].map((item, i) => (
+                                    <div key={item.title} className="group relative min-h-[320px] border-l border-black py-10 pl-8 pr-6 transition-all duration-500 hover:bg-[#c8ff00]">
+                                        <img src={item.img} alt={item.title} className="mb-5 h-24 w-24" />
+                                        <h3 className="mb-2 text-lg font-bold uppercase tracking-wider text-black">{item.title}</h3>
+                                        <p className="text-sm leading-relaxed text-gray-600">{item.desc}</p>
+                                        <div className="absolute bottom-10 left-8 text-2xl text-black">→</div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+
                     <section id="manfaat" className="flex min-h-screen items-center bg-white px-4 py-20 sm:px-6 lg:px-8">
                         <div className="mx-auto max-w-6xl">
                             <div className="mb-12 text-center">
@@ -293,51 +343,7 @@ export default function Welcome() {
                         </div>
                     </section>
 
-                    <section className="flex min-h-screen items-center bg-gray-100 px-4 py-24 sm:px-8 lg:px-12">
-                        <div className="mx-auto max-w-7xl">
-                            <div className="mb-16">
-                                <span className="text-xl font-bold uppercase tracking-widest text-black">Alur Sistem</span>
-                            </div>
-
-                            <div className="flex">
-                                {[
-                                    {
-                                        img: '/alat/sensor.svg',
-                                        title: 'SENSOR',
-                                        desc: 'Sensor ultrasonik mendeteksi ketinggian air di lokasi pemantauan.',
-                                    },
-                                    {
-                                        img: '/alat/API.svg',
-                                        title: 'API',
-                                        desc: 'API backend memproses data dari sensor dan menyiapkan untuk disimpan.',
-                                    },
-                                    {
-                                        img: '/alat/database.svg',
-                                        title: 'DATABASE',
-                                        desc: 'Data tersimpan aman di database untuk riwayat dan analisis.',
-                                    },
-                                    {
-                                        img: '/alat/cloud.svg',
-                                        title: 'CLOUD',
-                                        desc: 'Server cloud menyimpan dan mengelola data secara terpusat.',
-                                    },
-                                    {
-                                        img: '/alat/web.svg',
-                                        title: 'DASHBOARD',
-                                        desc: 'Data ditampilkan real-time melalui dashboard web interaktif.',
-                                    },
-                                ].map((item, i) => (
-                                    <div key={item.title} className="group relative min-h-[320px] border-l border-black py-10 pl-8 pr-6 transition-all duration-500 hover:bg-[#c8ff00]">
-                                        <img src={item.img} alt={item.title} className="mb-5 h-24 w-24" />
-                                        <h3 className="mb-2 text-lg font-bold uppercase tracking-wider text-black">{item.title}</h3>
-                                        <p className="text-sm leading-relaxed text-gray-600">{item.desc}</p>
-                                        <div className="absolute bottom-10 left-8 text-2xl text-black">→</div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </section>
-
+                  
                     <section id="tujuan" className="flex min-h-screen items-center bg-white px-4 py-20 sm:px-6 lg:px-8">
                         <div className="mx-auto max-w-6xl">
                             <SectionHeading
@@ -410,11 +416,12 @@ export default function Welcome() {
                                 <div className="grid grid-cols-2 gap-8">
                                     <ul className="space-y-2 text-sm text-gray-400">
                                         <li><a href="#hero" className="transition hover:text-white">Beranda</a></li>
-                                        <li><a href="#manfaat" className="transition hover:text-white">Manfaat</a></li>
+                                        <li><a href="#monitoring" className="transition hover:text-white">Live Monitoring</a></li>
+                                        <li><a href="#alur-sistem" className="transition hover:text-white">Alur Sistem</a></li>
                                     </ul>
                                     <ul className="space-y-2 text-sm text-gray-400">
+                                        <li><a href="#manfaat" className="transition hover:text-white">Manfaat</a></li>
                                         <li><a href="#tujuan" className="transition hover:text-white">Tujuan</a></li>
-                                        <li><a href="#monitoring" className="transition hover:text-white">Live Monitoring</a></li>
                                     </ul>
                                 </div>
                             </div>
