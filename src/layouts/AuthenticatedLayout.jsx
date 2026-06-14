@@ -43,8 +43,8 @@ function SidebarNavLink({ href, active, children, onNavigate }) {
             className={
                 'group flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition ' +
                 (active
-                    ? 'border-r-2 border-amber-400 bg-amber-500/15 text-amber-200'
-                    : 'text-slate-200 hover:bg-slate-800 hover:text-white')
+                    ? 'border-r-2 border-black bg-gray-100 text-black'
+                    : 'text-gray-600 hover:bg-gray-100 hover:text-black')
             }
         >
             {children}
@@ -256,18 +256,18 @@ export default function AuthenticatedLayout({
                     }}
                     transition={sidebarTransition}
                     className={
-                        'fixed inset-y-0 left-0 z-50 flex w-[min(16rem,85vw)] max-w-[16rem] flex-col overflow-hidden border-r border-slate-700 bg-slate-900 shadow-lg will-change-[transform,width,opacity] lg:shadow-sm ' +
-                        (sidebarOpenDesktop ? 'lg:border-slate-700' : 'lg:border-transparent')
+                        'fixed inset-y-0 left-0 z-50 flex w-[min(16rem,85vw)] max-w-[16rem] flex-col overflow-hidden border-r border-black bg-white shadow-lg will-change-[transform,width,opacity] lg:shadow-sm ' +
+                        (sidebarOpenDesktop ? 'lg:border-black' : 'lg:border-transparent')
                     }
                 >
-                    <div className="flex h-14 shrink-0 items-center justify-between gap-2 border-b border-slate-700 px-3">
+                    <div className="flex h-14 shrink-0 items-center justify-between gap-2 border-b border-black px-3">
                         <Link
                             href="/"
                             className="flex min-w-0 flex-1 items-center gap-2"
                             onClick={closeMobile}
                         >
                             <ApplicationLogo className="h-11 w-auto shrink-0" />
-                            <span className="truncate text-sm font-semibold tracking-tight text-white">
+                            <span className="truncate text-sm font-semibold tracking-tight text-black">
                                 Flood Monitoring
                             </span>
                         </Link>
@@ -277,7 +277,7 @@ export default function AuthenticatedLayout({
                                 setMobileMenuOpen(false);
                                 setDesktopSidebarCollapsed(true);
                             }}
-                            className="hidden shrink-0 rounded-md p-2 text-slate-400 transition-colors duration-200 hover:bg-slate-800 hover:text-white lg:inline-flex"
+                            className="hidden shrink-0 rounded-md p-2 text-gray-400 transition-colors duration-200 hover:bg-gray-100 hover:text-black lg:inline-flex"
                             aria-label="Sembunyikan sidebar"
                             title="Sembunyikan sidebar"
                         >
@@ -298,7 +298,7 @@ export default function AuthenticatedLayout({
                         <button
                             type="button"
                             onClick={closeMobile}
-                            className="inline-flex shrink-0 rounded-md p-2 text-slate-400 transition-colors duration-200 hover:bg-slate-800 hover:text-white lg:hidden"
+                            className="inline-flex shrink-0 rounded-md p-2 text-gray-400 transition-colors duration-200 hover:bg-gray-100 hover:text-black lg:hidden"
                             aria-label="Tutup menu"
                         >
                             <svg
@@ -318,7 +318,7 @@ export default function AuthenticatedLayout({
                     </div>
 
                     <nav className="flex min-h-0 flex-1 flex-col space-y-1 overflow-y-auto p-3">
-                        <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
+                        <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-gray-400">
                             Utama
                         </p>
                         <SidebarNavLink
@@ -336,7 +336,7 @@ export default function AuthenticatedLayout({
                             <span>Riwayat</span>
                         </SidebarNavLink>
 
-                        <p className="mb-2 mt-6 px-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
+                        <p className="mb-2 mt-6 px-3 text-xs font-semibold uppercase tracking-wider text-gray-400">
                             Integrasi
                         </p>
                         <SidebarNavLink
@@ -375,7 +375,7 @@ export default function AuthenticatedLayout({
                                 }
                                 aria-hidden
                             />
-                            <span className="text-sm font-medium text-slate-200">
+                            <span className="text-sm font-medium text-gray-600">
                                 {iotLive === true
                                     ? 'online'
                                     : iotLive === false
@@ -419,7 +419,7 @@ export default function AuthenticatedLayout({
                         <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
                             <button
                                 type="button"
-                                className="inline-flex rounded-md border border-slate-600 bg-slate-800 p-2 text-white transition-colors duration-200 hover:bg-slate-700 lg:hidden"
+                                className="inline-flex rounded-md border border-black bg-white p-2 text-black transition-colors duration-200 hover:bg-gray-100 lg:hidden"
                                 onClick={() => setMobileMenuOpen((v) => !v)}
                                 aria-label="Buka menu"
                             >
@@ -440,7 +440,7 @@ export default function AuthenticatedLayout({
                             {desktopSidebarCollapsed ? (
                                 <button
                                     type="button"
-                                    className="hidden rounded-md border border-slate-600 bg-slate-800 p-2 text-white transition-colors duration-200 hover:bg-slate-700 lg:inline-flex"
+                                    className="hidden rounded-md border border-black bg-white p-2 text-black transition-colors duration-200 hover:bg-gray-100 lg:inline-flex"
                                     onClick={() => setDesktopSidebarCollapsed(false)}
                                     aria-label="Tampilkan sidebar"
                                     title="Tampilkan sidebar"
@@ -465,7 +465,7 @@ export default function AuthenticatedLayout({
                         {hasNavbarExtras ? (
                             <div className="flex min-w-0 flex-1 items-center gap-2 sm:gap-4">
                                 {title ? (
-                                    <h1 className="min-w-0 flex-1 truncate text-sm font-semibold leading-none text-white sm:text-base">
+                                    <h1 className="min-w-0 flex-1 truncate text-sm font-semibold leading-none text-black sm:text-base">
                                         {title}
                                     </h1>
                                 ) : (
@@ -481,16 +481,16 @@ export default function AuthenticatedLayout({
                             <div className="min-w-0 flex-1" />
                         )}
 
-                        <div className="flex shrink-0 items-center border-l border-slate-700 pl-2 sm:pl-3">
+                        <div className="flex shrink-0 items-center border-l border-black pl-2 sm:pl-3">
                             <Dropdown>
                                 <Dropdown.Trigger>
                                     <button
                                         type="button"
-                                        className="inline-flex max-w-[9rem] items-center gap-1.5 rounded-md border border-slate-600 bg-slate-800 py-1.5 pl-2.5 pr-2 text-left text-xs font-medium text-white shadow-sm transition-colors duration-200 hover:bg-slate-700 sm:max-w-[12rem] sm:gap-2 sm:pl-3 sm:text-sm"
+                                        className="inline-flex max-w-[9rem] items-center gap-1.5 rounded-md border border-black bg-white py-1.5 pl-2.5 pr-2 text-left text-xs font-medium text-black shadow-sm transition-colors duration-200 hover:bg-gray-100 sm:max-w-[12rem] sm:gap-2 sm:pl-3 sm:text-sm"
                                     >
                                         <span className="truncate">{user?.name ?? 'Pengguna'}</span>
                                         <svg
-                                            className="h-4 w-4 shrink-0 text-slate-400"
+                                            className="h-4 w-4 shrink-0 text-gray-400"
                                             xmlns="http://www.w3.org/2000/svg"
                                             viewBox="0 0 20 20"
                                             fill="currentColor"
@@ -523,7 +523,7 @@ export default function AuthenticatedLayout({
                     </motion.header>
 
                     {header ? (
-                        <div className="border-b border-slate-700 bg-slate-900 shadow-sm">
+                        <div className="border-b border-black bg-white shadow-sm">
                             <div className="mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8">
                                 {header}
                             </div>

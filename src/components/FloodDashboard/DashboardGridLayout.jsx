@@ -367,12 +367,12 @@ export default function DashboardGridLayout({
 
     return (
         <div className="space-y-3">
-            <div className="flex flex-col gap-2 rounded-lg border border-slate-700 bg-slate-900 px-4 py-3 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col gap-2 rounded-lg border border-black bg-white px-4 py-3 shadow-sm sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                    <h2 className="text-lg font-semibold text-white">
+                    <h2 className="text-lg font-semibold text-black">
                         {layoutName === 'riwayat' ? 'Layout riwayat' : 'Layout ringkasan'}
                     </h2>
-                    <p className="text-xs text-slate-400">{saveHint}</p>
+                    <p className="text-xs text-gray-500">{saveHint}</p>
                 </div>
                 <div className="flex flex-wrap gap-2">
                     <button
@@ -401,7 +401,7 @@ export default function DashboardGridLayout({
                                 return next;
                             });
                         }}
-                        className="rounded-md border border-slate-600 bg-slate-800 px-3 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-slate-700"
+                        className="rounded-md border border-black bg-white px-3 py-1.5 text-xs font-medium text-black shadow-sm hover:bg-gray-100"
                     >
                         {locked ? 'Buka kunci' : 'Kunci layout'}
                     </button>
@@ -435,7 +435,7 @@ export default function DashboardGridLayout({
                         type="button"
                         disabled={locked}
                         onClick={() => setModalOpen(true)}
-                        className="rounded-md bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-indigo-500 disabled:opacity-40"
+                        className="rounded-md bg-black px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-gray-800 disabled:opacity-40"
                     >
                         Tambah widget
                     </button>
@@ -443,7 +443,7 @@ export default function DashboardGridLayout({
                         type="button"
                         disabled={locked}
                         onClick={resetLayout}
-                        className="rounded-md border border-red-800 bg-red-950/50 px-3 py-1.5 text-xs font-medium text-red-100 hover:bg-red-950/80 disabled:opacity-40"
+                        className="rounded-md border border-red-600 bg-white px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50 disabled:opacity-40"
                     >
                         Reset layout
                     </button>
@@ -484,15 +484,15 @@ export default function DashboardGridLayout({
 
             {modalOpen ? (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-                    <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-xl border border-slate-600 bg-slate-900 p-5 shadow-xl">
-                        <h3 className="text-lg font-semibold text-white">Tambah widget</h3>
-                        <div className="mt-4 space-y-3 text-sm text-white">
+                    <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-xl border border-black bg-white p-5 shadow-xl">
+                        <h3 className="text-lg font-semibold text-black">Tambah widget</h3>
+                        <div className="mt-4 space-y-3 text-sm text-black">
                             <div>
-                                <label className="block text-xs font-medium text-slate-300">
+                                <label className="block text-xs font-medium text-gray-600">
                                     Tipe
                                 </label>
                                 <select
-                                    className="mt-1 w-full rounded-md border-slate-600 bg-slate-950 text-sm text-white shadow-sm"
+                                    className="mt-1 w-full rounded-md border border-black bg-white text-sm text-black shadow-sm"
                                     value={draftType}
                                     onChange={(e) => setDraftType(e.target.value)}
                                 >
@@ -504,22 +504,22 @@ export default function DashboardGridLayout({
                                 </select>
                             </div>
                             <div>
-                                <label className="block text-xs font-medium text-slate-300">
+                                <label className="block text-xs font-medium text-gray-600">
                                     Judul
                                 </label>
                                 <input
                                     type="text"
-                                    className="mt-1 w-full rounded-md border-slate-600 bg-slate-950 text-sm text-white shadow-sm"
+                                    className="mt-1 w-full rounded-md border border-black bg-white text-sm text-black shadow-sm"
                                     value={draftTitle}
                                     onChange={(e) => setDraftTitle(e.target.value)}
                                 />
                             </div>
                             <div>
-                                <label className="block text-xs font-medium text-slate-300">
+                                <label className="block text-xs font-medium text-gray-600">
                                     Perangkat (opsional)
                                 </label>
                                 <select
-                                    className="mt-1 w-full rounded-md border-slate-600 bg-slate-950 text-sm text-white shadow-sm"
+                                    className="mt-1 w-full rounded-md border border-black bg-white text-sm text-black shadow-sm"
                                     value={draftDevice}
                                     onChange={(e) => setDraftDevice(e.target.value)}
                                 >
@@ -532,7 +532,7 @@ export default function DashboardGridLayout({
                                 </select>
                             </div>
                             {draftType === 'relay_manual' || draftType === 'control_panel' ? (
-                                <p className="rounded-md border border-amber-800/50 bg-amber-950/50 px-2 py-2 text-xs text-amber-100">
+                                <p className="rounded-md border border-amber-600 bg-amber-50 px-2 py-2 text-xs text-amber-800">
                                     <strong>Relay manual / panel perintah:</strong> pilih{' '}
                                     <em>Perangkat</em> agar tombol mengirim perintah ke ESP32 yang
                                     benar (otomatis dari sensor tetap tampil untuk perangkat itu).
@@ -541,12 +541,12 @@ export default function DashboardGridLayout({
                             {draftType === 'level' ? (
                                 <div className="grid grid-cols-2 gap-2">
                                     <div>
-                                        <label className="block text-xs font-medium text-slate-300">
+                                        <label className="block text-xs font-medium text-gray-600">
                                             NORMAL maks. (cm)
                                         </label>
                                         <input
                                             type="number"
-                                            className="mt-1 w-full rounded-md border-slate-600 bg-slate-950 text-sm text-white"
+                                            className="mt-1 w-full rounded-md border border-black bg-white text-sm text-black"
                                             value={draftThAman}
                                             onChange={(e) =>
                                                 setDraftThAman(Number(e.target.value))
@@ -554,12 +554,12 @@ export default function DashboardGridLayout({
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-xs font-medium text-slate-300">
+                                        <label className="block text-xs font-medium text-gray-600">
                                             SIAGA maks. (cm)
                                         </label>
                                         <input
                                             type="number"
-                                            className="mt-1 w-full rounded-md border-slate-600 bg-slate-950 text-sm text-white"
+                                            className="mt-1 w-full rounded-md border border-black bg-white text-sm text-black"
                                             value={draftThSiaga}
                                             onChange={(e) =>
                                                 setDraftThSiaga(Number(e.target.value))
@@ -572,14 +572,14 @@ export default function DashboardGridLayout({
                         <div className="mt-5 flex justify-end gap-2">
                             <button
                                 type="button"
-                                className="rounded-md border border-slate-600 px-3 py-1.5 text-sm text-white hover:bg-slate-800"
+                                className="rounded-md border border-black px-3 py-1.5 text-sm text-black hover:bg-gray-100"
                                 onClick={() => setModalOpen(false)}
                             >
                                 Batal
                             </button>
                             <button
                                 type="button"
-                                className="rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white"
+                                className="rounded-md bg-black px-3 py-1.5 text-sm font-semibold text-white"
                                 onClick={addWidgetFromModal}
                             >
                                 Tambah

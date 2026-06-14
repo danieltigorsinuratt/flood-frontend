@@ -470,16 +470,16 @@ export default function DashboardWidget({
     };
 
     return (
-        <div className="flex h-full flex-col rounded-lg border border-slate-700 bg-slate-900 shadow-sm">
-            <div className="flex items-center justify-between border-b border-slate-700 bg-slate-800/90 px-2 py-1">
-                <span className="truncate text-xs font-semibold text-white">
+        <div className="flex h-full flex-col rounded-lg border border-black bg-white shadow-sm">
+            <div className="flex items-center justify-between border-b border-black bg-gray-50 px-2 py-1">
+                <span className="truncate text-xs font-semibold text-black">
                     {widget.title}
                 </span>
                 {!locked && onRemove ? (
                     <button
                         type="button"
                         onClick={() => onRemove(widget.id)}
-                        className="rounded px-1.5 text-xs text-red-400 hover:bg-red-950/50"
+                        className="rounded px-1.5 text-xs text-red-500 hover:bg-red-50"
                         title="Hapus widget"
                     >
                         ×

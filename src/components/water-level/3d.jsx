@@ -135,7 +135,6 @@ export default function Flood3DScene({
 
     return (
         <div className={'relative w-full overflow-hidden rounded-2xl border border-white/20 bg-white/10 shadow-lg backdrop-blur-md ' + className} style={{ height }}>
-            {/* Canvas 3D */}
             <Canvas
                 dpr={[1, 2]}
                 style={{ width: '100%', height: '100%' }}
@@ -148,7 +147,6 @@ export default function Flood3DScene({
                 </Suspense>
             </Canvas>
 
-            {/* Overlay: level & status */}
             <div className="absolute bottom-3 left-3 flex items-center gap-2">
                 <div className={`rounded-lg border px-3 py-1.5 text-xs font-bold backdrop-blur-sm ${status.bg} ${status.color}`}>
                     {status.label}

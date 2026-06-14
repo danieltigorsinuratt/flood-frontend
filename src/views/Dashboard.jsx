@@ -3,7 +3,6 @@
 import DashboardGridLayout from '@/components/FloodDashboard/DashboardGridLayout';
 import IotLiveNotifications from '@/components/FloodDashboard/IotLiveNotifications';
 import Flood3DScene from '@/components/water-level/3d';
-import RealTimeSensorWidget from '@/components/RealTimeSensorWidget';
 import { useIotApiHost } from '@/contexts/IotApiHostContext';
 import { WIDGET_TYPE_OPTIONS_RINGKASAN } from '@/lib/dashboardWidgetDefaults';
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
@@ -102,23 +101,23 @@ export default function Dashboard() {
             title=" Dashboard Flood Monitoring System"
             navbarTrailing={
                 <>
-                    <span className="hidden flex-wrap items-baseline gap-x-1 text-xs text-slate-400 sm:inline-flex sm:text-sm">
-                        <span className="font-medium tabular-nums text-white" suppressHydrationWarning>
+                    <span className="hidden flex-wrap items-baseline gap-x-1 text-xs text-gray-500 sm:inline-flex sm:text-sm">
+                        <span className="font-medium tabular-nums text-black" suppressHydrationWarning>
                             WIB {formatTimeWib(nowWib, { timeStyle: 'medium' })}
                         </span>
-                        <span className="text-slate-500">·</span>
+                        <span className="text-gray-400">·</span>
                         <span suppressHydrationWarning>
                             Data:{' '}
                             {formatTimeWib(lastSync, { timeStyle: 'medium' })}
                         </span>
                     </span>
-                    <span className="text-xs tabular-nums text-slate-400 sm:hidden" suppressHydrationWarning>
+                    <span className="text-xs tabular-nums text-gray-500 sm:hidden" suppressHydrationWarning>
                         WIB {formatTimeWib(nowWib, { timeStyle: 'short' })}
                     </span>
                     <button
                         type="button"
                         onClick={() => refresh().catch(() => {})}
-                        className="whitespace-nowrap rounded-md border border-slate-600 bg-slate-800 px-2 py-1 text-xs font-medium text-white shadow-sm transition-colors duration-200 hover:bg-slate-700 sm:px-3"
+                        className="whitespace-nowrap rounded-md border border-black bg-white px-2 py-1 text-xs font-medium text-black shadow-sm transition-colors duration-200 hover:bg-gray-100 sm:px-3"
                     >
                         <span className="sm:hidden">Refresh</span>
                         <span className="hidden sm:inline">Refresh data</span>
@@ -132,13 +131,8 @@ export default function Dashboard() {
                         <IotLiveNotifications iotConnectivity={dash.iot_connectivity} />
                     </div>
 
-                    {/* 3D Flood Visualization */}
                     <div className="px-4 sm:px-0">
                         <Flood3DScene sensorId={null} height={400} />
-                    </div>
-
-                    <div className="px-4 sm:px-0">
-                        <RealTimeSensorWidget />
                     </div>
 
                     <div className="px-4 sm:px-0">
@@ -152,7 +146,7 @@ export default function Dashboard() {
                                 widgetTypeOptions={WIDGET_TYPE_OPTIONS_RINGKASAN}
                             />
                         ) : (
-                            <p className="text-sm text-slate-400">Memuat layout dashboard…</p>
+                            <p className="text-sm text-gray-500">Memuat layout dashboard…</p>
                         )}
                     </div>
                 </div>

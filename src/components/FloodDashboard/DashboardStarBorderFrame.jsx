@@ -7,7 +7,7 @@ export default function DashboardStarBorderFrame({ children }) {
     return (
         <StarBorderFrame
             className="rounded-lg"
-            innerClassName="rounded-[7px] bg-slate-950 ring-1 ring-inset ring-white/40"
+            innerClassName="rounded-[7px] bg-white ring-1 ring-inset ring-black/20"
         >
             {children}
         </StarBorderFrame>

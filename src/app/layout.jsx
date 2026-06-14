@@ -15,7 +15,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="id" className="h-full" suppressHydrationWarning>
-      <body className="min-h-full bg-slate-950 text-white antialiased">
+      <body className="min-h-full bg-white text-slate-900 antialiased">
         <AuthProvider>
           <IotApiHostProvider>
             <SensorDataProvider>

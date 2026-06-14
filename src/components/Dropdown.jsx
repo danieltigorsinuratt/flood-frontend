@@ -40,7 +40,7 @@ const Trigger = ({ children }) => {
 const Content = ({
     align = 'right',
     width = '48',
-    contentClasses = 'py-1 bg-slate-800',
+    contentClasses = 'py-1 bg-white border border-black',
     children,
 }) => {
     const { open, setOpen } = useContext(DropDownContext);
@@ -90,7 +90,7 @@ const Content = ({
 
 const DropdownLink = ({ className = '', children, href, onClick, as, ...props }) => {
     const classes =
-        'block w-full px-4 py-2 text-start text-sm leading-5 text-white transition duration-150 ease-in-out hover:bg-slate-700 focus:bg-slate-700 focus:outline-none ' +
+        'block w-full px-4 py-2 text-start text-sm leading-5 text-black transition duration-150 ease-in-out hover:bg-gray-100 focus:bg-gray-100 focus:outline-none ' +
         className;
 
     if (as === 'button' || onClick) {
