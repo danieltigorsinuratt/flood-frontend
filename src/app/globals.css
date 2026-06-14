@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #020617; /* slate-950 */
-  --foreground: #f8fafc; /* slate-50 */
+  --background: #ffffff; /* white */
+  --foreground: #0f172a; /* slate-900 */
 }
 
 @theme inline {
@@ -11,7 +11,7 @@
 }
 
 html {
-  color-scheme: dark;
+  color-scheme: light;
   scroll-behavior: smooth;
 }
 
@@ -39,14 +39,14 @@ body {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0f172a; /* slate-900 */
+  background: #f1f5f9; /* slate-100 */
 }
 ::-webkit-scrollbar-thumb {
-  background: #334155; /* slate-700 */
+  background: #cbd5e1; /* slate-300 */
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #475569; /* slate-600 */
+  background: #94a3b8; /* slate-400 */
 }
 
 /* Seleksi teks */

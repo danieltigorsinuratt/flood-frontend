@@ -206,7 +206,7 @@ export default function AuthenticatedLayout({
             };
 
     return (
-        <div className="min-h-screen bg-slate-950 text-white">
+        <div className="min-h-screen bg-white text-slate-900">
             {flash.success ? (
                 <div className="fixed inset-x-0 top-0 z-[60] border-b border-emerald-700 bg-emerald-600 px-4 py-2 text-center text-sm font-medium text-white shadow">
                     {flash.success}
@@ -530,7 +530,7 @@ export default function AuthenticatedLayout({
                         </div>
                     ) : null}
 
-                    <main className="flex-1 bg-slate-950 text-white">{children}</main>
+                    <main className="flex-1 bg-white text-slate-900">{children}</main>
                 </div>
             </div>
 

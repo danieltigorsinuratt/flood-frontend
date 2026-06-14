@@ -14,7 +14,9 @@
     "chart.js": "^4.5.1",
     "framer-motion": "^12.40.0",
     "gridstack": "^12.6.0",
+    "laravel-echo": "^2.3.7",
     "next": "16.2.7",
+    "pusher-js": "^8.5.0",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },

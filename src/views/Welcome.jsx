@@ -63,17 +63,17 @@ export default function Welcome() {
     const reduceMotion = useReducedMotion();
     const { scrollY } = useScroll();
 
-    const navBgAlpha = useTransform(scrollY, [0, 140], reduceMotion ? [0.55, 0.62] : [0.28, 0.62]);
-    const navBg = useTransform(navBgAlpha, (a) => `rgba(15, 23, 42, ${a})`);
+    const navBgAlpha = useTransform(scrollY, [0, 140], reduceMotion ? [0.85, 0.95] : [0.7, 0.95]);
+    const navBg = useTransform(navBgAlpha, (a) => `rgba(255, 255, 255, ${a})`);
 
     const navBlurPx = useTransform(scrollY, [0, 140], reduceMotion ? [12, 12] : [8, 18]);
     const navBackdrop = useTransform(navBlurPx, (px) => `saturate(1.2) blur(${px}px)`);
 
-    const navBorderAlpha = useTransform(scrollY, [0, 140], reduceMotion ? [0.22, 0.28] : [0.12, 0.35]);
-    const navBorder = useTransform(navBorderAlpha, (a) => `rgba(71, 85, 105, ${a})`);
+    const navBorderAlpha = useTransform(scrollY, [0, 140], reduceMotion ? [0.15, 0.25] : [0.08, 0.25]);
+    const navBorder = useTransform(navBorderAlpha, (a) => `rgba(148, 163, 184, ${a})`);
 
     return (
-        <div className="min-h-screen bg-slate-950 text-white selection:bg-sky-500/35 selection:text-white">
+        <div className="min-h-screen bg-white text-slate-900 selection:bg-sky-500/35 selection:text-slate-900">
             <div className="relative flex min-h-screen flex-col">
                 <motion.header
                     style={{
@@ -82,11 +82,11 @@ export default function Welcome() {
                         WebkitBackdropFilter: navBackdrop,
                         borderBottomColor: navBorder,
                     }}
-                    className="sticky top-0 z-40 flex shrink-0 items-center justify-between gap-3 border-b border-slate-700/0 px-4 py-3 sm:px-6"
+                    className="sticky top-0 z-40 flex shrink-0 items-center justify-between gap-3 border-b border-slate-200/0 px-4 py-3 sm:px-6"
                 >
                     <Link href="/" className="flex min-w-0 items-center gap-3 transition-opacity hover:opacity-90 sm:gap-5">
                         <img src="/img/logo.png" alt="" className="h-10 w-auto shrink-0 object-contain sm:h-12" />
-                        <span className="truncate text-xl font-bold tracking-tight text-white sm:text-2xl">
+                        <span className="truncate text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
                             Flood Monitoring System
                         </span>
                     </Link>
@@ -95,22 +95,22 @@ export default function Welcome() {
                 <main className="relative flex-1">
                     <Hero auth={auth} canLogin={canLogin} canRegister={canRegister} />
 
-                    <section className="relative z-10 border-t border-slate-900 bg-slate-950 px-4 py-16 sm:px-6 lg:px-8">
+                    <section className="relative z-10 border-t border-slate-200 bg-slate-50 px-4 py-16 sm:px-6 lg:px-8">
                         <div className="mx-auto max-w-7xl">
                             <div className="mb-12 text-center">
-                                <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+                                <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
                                     Pantau Ketinggian Air Terkini
                                 </h2>
-                                <p className="mx-auto mt-3 max-w-2xl text-lg text-slate-400 sm:mt-4">
+                                <p className="mx-auto mt-3 max-w-2xl text-lg text-slate-500 sm:mt-4">
                                     Data indikator dan grafik fluktuasi real-time langsung dari sensor tanpa perlu login.
                                 </p>
                             </div>
 
                             <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-                                <div className="flex flex-col justify-between rounded-2xl border border-slate-800/60 bg-slate-900/50 p-6 shadow-xl backdrop-blur-md">
+                                <div className="flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-6 shadow-lg">
                                     <div>
-                                        <h3 className="text-lg font-semibold text-slate-200">Ketinggian Air</h3>
-                                        <p className="text-xs text-slate-500">
+                                        <h3 className="text-lg font-semibold text-slate-800">Ketinggian Air</h3>
+                                        <p className="text-xs text-slate-400">
                                             {loadingData ? 'Menghubungkan ke IoT...' : 'Sinkronisasi Aktif (5s)'}
                                         </p>
                                     </div>
@@ -137,9 +137,9 @@ export default function Welcome() {
                                     </div>
                                 </div>
 
-                                <div className="rounded-2xl border border-slate-800/60 bg-slate-900/50 p-6 shadow-xl backdrop-blur-md md:col-span-2">
+                                <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-lg md:col-span-2">
                                     <div className="mb-4 flex items-center justify-between">
-                                        <h3 className="text-lg font-semibold text-slate-200">
+                                        <h3 className="text-lg font-semibold text-slate-800">
                                             Grafik Tinggi Air {chartDevice ? `— ${chartDevice}` : ''}
                                         </h3>
                                         <span className="inline-flex items-center gap-1.5 rounded-md bg-sky-500/10 px-2 py-1 text-xs font-medium text-sky-400 ring-1 ring-inset ring-sky-500/20">
@@ -148,7 +148,7 @@ export default function Welcome() {
                                         </span>
                                     </div>
 
-                                    <div className="w-full rounded-xl border border-slate-800/40 bg-slate-950/40 p-2">
+                                    <div className="w-full rounded-xl border border-slate-100 bg-slate-50 p-2">
                                         <WaterLevelChart chartReadings={chartReadings} chartDevice={chartDevice} />
                                     </div>
                                 </div>
@@ -157,7 +157,7 @@ export default function Welcome() {
                     </section>
                 </main>
 
-                <footer className="relative border-t border-slate-800 bg-slate-900/90 py-6 text-center text-xs text-slate-400 backdrop-blur-sm">
+                <footer className="relative border-t border-slate-200 bg-slate-50 py-6 text-center text-xs text-slate-500">
                     Flood Monitoring System
                 </footer>
             </div>

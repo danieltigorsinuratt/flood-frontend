@@ -16,13 +16,6 @@ export const WIDGET_TYPE_OPTIONS_RINGKASAN = [
         label: 'Relay — manual (perintah ke perangkat)',
     },
     { value: 'chart_device', label: 'Grafik tinggi air' },
-    { value: 'device_status', label: 'Daftar perangkat ESP32' },
-    { value: 'stat_total', label: 'Total pembacaan tersimpan' },
-    {
-        value: 'stat_alerts',
-        label: 'Peringatan SIAGA / AWAS (jam terakhir)',
-    },
-    { value: 'control_panel', label: 'Panel perintah ke perangkat' },
 ];
 
 /** Hanya halaman Riwayat */

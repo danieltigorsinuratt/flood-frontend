@@ -320,23 +320,6 @@ export default function DashboardWidget({
                     </div>
                 );
             }
-            case 'stat_alerts':
-                return (
-                    <div className="flex gap-6 text-sm">
-                        <div>
-                            <p className="text-xs text-amber-200">SIAGA (1 jam)</p>
-                            <p className="text-2xl font-bold text-amber-100">
-                                {stats.warning_siaga_last_hour ?? 0}
-                            </p>
-                        </div>
-                        <div>
-                            <p className="text-xs text-red-200">AWAS (1 jam)</p>
-                            <p className="text-2xl font-bold text-red-100">
-                                {stats.danger_awas_last_hour ?? 0}
-                            </p>
-                        </div>
-                    </div>
-                );
             case 'stat_online': {
                 const total = dash.devices?.length ?? 0;
                 const on =
@@ -364,12 +347,6 @@ export default function DashboardWidget({
                     </p>
                 );
             }
-            case 'stat_total':
-                return (
-                    <p className="text-3xl font-bold text-white">
-                        {stats.sensor_readings_total ?? 0}
-                    </p>
-                );
             case 'chart_device':
                 return (
                     <MiniWaterChart
@@ -378,42 +355,6 @@ export default function DashboardWidget({
                         heightClass="h-48"
                     />
                 );
-            case 'device_status': {
-                const devs = widget.device_id
-                    ? (dash.devices ?? []).filter((d) => d.device_id === widget.device_id)
-                    : dash.devices ?? [];
-                return (
-                    <div className="max-h-52 overflow-auto text-xs">
-                        <table className="w-full text-left">
-                            <thead>
-                                <tr className="border-b text-slate-400">
-                                    <th className="py-1 pr-2">ID</th>
-                                    <th className="py-1 pr-2">Nama</th>
-                                    <th className="py-1 pr-2">Terakhir</th>
-                                    <th className="py-1">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {devs.map((d) => (
-                                    <tr key={d.device_id} className="border-b border-slate-700">
-                                        <td className="py-1 pr-2 font-mono">{d.device_id}</td>
-                                        <td className="py-1 pr-2">{d.name}</td>
-                                        <td className="py-1 pr-2 whitespace-nowrap text-slate-300">
-                                            {d.last_seen_at
-                                                ? formatDateTimeWib(d.last_seen_at, {
-                                                      timeStyle: 'short',
-                                                      dateStyle: 'short',
-                                                  })
-                                                : '—'}
-                                        </td>
-                                        <td className="py-1">{d.status}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                );
-            }
             case 'water_history':
                 return (
                     <div className="max-h-52 overflow-auto text-xs">
@@ -516,54 +457,6 @@ export default function DashboardWidget({
                                     dateStyle: 'short',
                                     timeStyle: 'medium',
                                 })}
-                            </p>
-                        ) : null}
-                    </div>
-                );
-            }
-            case 'control_panel': {
-                const on = widget.commandOn || 'pump_on';
-                const off = widget.commandOff || 'pump_off';
-                const al = widget.commandAlert || 'alert';
-                const rs = widget.commandReset || 'reset';
-                return (
-                    <div className="flex flex-wrap gap-2">
-                        <button
-                            type="button"
-                            disabled={!widget.device_id || busy}
-                            onClick={() => sendCmd(on)}
-                            className="rounded bg-emerald-600 px-2 py-1 text-xs font-medium text-white disabled:opacity-40"
-                        >
-                            {busy === on ? '…' : commandButtonLabel(on)}
-                        </button>
-                        <button
-                            type="button"
-                            disabled={!widget.device_id || busy}
-                            onClick={() => sendCmd(off)}
-                            className="rounded bg-slate-600 px-2 py-1 text-xs font-medium text-white disabled:opacity-40"
-                        >
-                            {busy === off ? '…' : commandButtonLabel(off)}
-                        </button>
-                        <button
-                            type="button"
-                            disabled={!widget.device_id || busy}
-                            onClick={() => sendCmd(al)}
-                            className="rounded bg-amber-500 px-2 py-1 text-xs font-medium text-white disabled:opacity-40"
-                        >
-                            {busy === al ? '…' : commandButtonLabel(al)}
-                        </button>
-                        <button
-                            type="button"
-                            disabled={!widget.device_id || busy}
-                            onClick={() => sendCmd(rs)}
-                            className="rounded bg-red-600 px-2 py-1 text-xs font-medium text-white disabled:opacity-40"
-                        >
-                            {busy === rs ? '…' : commandButtonLabel(rs)}
-                        </button>
-                        {!widget.device_id ? (
-                            <p className="w-full text-xs text-amber-200">
-                                Pilih perangkat saat menambah widget agar perintah dikirim ke ESP32
-                                yang benar.
                             </p>
                         ) : null}
                     </div>

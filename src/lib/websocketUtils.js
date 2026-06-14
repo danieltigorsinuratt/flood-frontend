@@ -1,23 +1,73 @@
-// WebSocket utility helper untuk frontend
+// Laravel Reverb WebSocket utility helper untuk frontend
+
+import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
+
+// Global Echo instance
+let echoInstance = null;
 
 /**
- * Get WebSocket URL berdasarkan environment
+ * Get atau initialize Echo instance untuk Laravel Reverb
  */
-export function getWebSocketURL() {
+export function getEchoInstance() {
+    if (echoInstance) {
+        return echoInstance;
+    }
+
     if (typeof window === 'undefined') {
-        return 'ws://localhost:6001';
+        return null;
     }
 
-    // Production environment
-    if (process.env.NODE_ENV === 'production') {
-        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        const host = process.env.NEXT_PUBLIC_WEBSOCKET_HOST || window.location.host;
-        const port = process.env.NEXT_PUBLIC_WEBSOCKET_PORT || '';
-        return `${protocol}//${host}${port ? `:${port}` : ''}`;
+    const reverbeHost = process.env.NEXT_PUBLIC_REVERB_HOST || 'localhost';
+    const reverbePort = process.env.NEXT_PUBLIC_REVERB_PORT || 8080;
+    const reverbeScheme = process.env.NEXT_PUBLIC_REVERB_SCHEME || 'http';
+    const reverbeAppKey = process.env.NEXT_PUBLIC_REVERB_APP_KEY || 'flood-monitoring-app-key';
+
+    // Setup Pusher (Reverb menggunakan protocol Pusher)
+    window.Pusher = Pusher;
+    Pusher.logToConsole = true;
+
+    echoInstance = new Echo({
+        broadcaster: 'pusher',
+        key: reverbeAppKey,
+        cluster: 'mt1',
+        wsHost: reverbeHost,
+        wsPort: reverbePort,
+        wssPort: reverbePort,
+        scheme: reverbeScheme,
+        enabledTransports: ['ws', 'wss'],
+        forceTLS: reverbeScheme === 'https',
+    });
+
+    return echoInstance;
+}
+
+/**
+ * Subscribe ke channel untuk listen events
+ */
+export function subscribeToChannel(channelName, eventName, callback) {
+    const echo = getEchoInstance();
+    if (!echo) {
+        console.error('Echo not initialized');
+        return null;
     }
 
-    // Development environment
-    return process.env.NEXT_PUBLIC_WEBSOCKET_URL || 'ws://localhost:6001';
+    const channel = echo.channel(channelName);
+    channel.listen(`.${eventName}`, callback);
+    
+    console.log(`✅ Subscribed to ${channelName} listening for ${eventName}`);
+    return channel;
+}
+
+/**
+ * Unsubscribe dari channel
+ */
+export function unsubscribeFromChannel(channelName) {
+    const echo = getEchoInstance();
+    if (echo) {
+        echo.leave(channelName);
+        console.log(`❌ Unsubscribed from ${channelName}`);
+    }
 }
 
 /**
@@ -56,3 +106,31 @@ export function getAlertLabel(level) {
 export function formatWaterLevel(cm) {
     return `${cm.toFixed(2)} cm`;
 }
+
+/**
+ * Get Reverb connection status
+ */
+export function getReverbStatus() {
+    const echo = getEchoInstance();
+    if (!echo) {
+        return { connected: false, status: 'disconnected' };
+    }
+
+    // Check Pusher connection
+    const pusher = echo.connector;
+    if (!pusher) {
+        return { connected: false, status: 'initializing' };
+    }
+
+    // Check if connection exists and has state property
+    if (!pusher.connection || !pusher.connection.state) {
+        return { connected: false, status: 'initializing' };
+    }
+
+    const state = pusher.connection.state;
+    return {
+        connected: state === 'connected',
+        status: state,
+    };
+}
+
