@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { route } from '@/lib/routes';
 import { motion, useReducedMotion } from 'framer-motion';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
 import { formatDateTimeWib } from '@/lib/wibTime';
 
 const HERO_WAVE_FALLBACK_D = 'M0 150 L400 150 L400 200 L0 200 Z';
@@ -394,6 +395,7 @@ export default function Hero({ auth, canLogin, canRegister }) {
                             </motion.div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </section>

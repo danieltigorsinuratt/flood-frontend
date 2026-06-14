@@ -1,6 +1,7 @@
 'use client';
 
 import Hero from '@/components/Hero';
+import Flood3DScene from '@/components/water-level/3d';
 import WaterLevelChart from '@/components/FloodDashboard/WaterLevelChart';
 import { useAuth } from '@/contexts/AuthContext';
 import axios from '@/lib/axios';
@@ -104,6 +105,11 @@ export default function Welcome() {
                                 <p className="mx-auto mt-3 max-w-2xl text-lg text-slate-400 sm:mt-4">
                                     Data indikator dan grafik fluktuasi real-time langsung dari sensor tanpa perlu login.
                                 </p>
+
+                                {/* 3D Flood Visualization */}
+                                <div className="mt-8 flex justify-center">
+                                    <Flood3DScene height={320} className="w-[560px] max-w-full" />
+                                </div>
                             </div>
 
                             <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
